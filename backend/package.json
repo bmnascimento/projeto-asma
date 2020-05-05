@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "deploy": "cd .. && git subtree push --prefix backend heroku master",
-    "build:ui": "cd ../frontend && rm -rf build && npm run build && cp -r build ../backend/build"
+    "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r build ../backend/build"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.3"
   }
 }
