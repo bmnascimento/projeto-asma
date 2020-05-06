@@ -1,12 +1,7 @@
-require('dotenv').config()
-const express = require('express')
+const app = require('./app')
+const config = require('./utils/config')
 
-const app = express()
-
-app.use(express.static('build'))
-
-PORT = process.env.PORT
-app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server started on port ${config.PORT}`)
 })
 
