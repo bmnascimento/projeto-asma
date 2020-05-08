@@ -21,7 +21,7 @@ const Login = () => {
           <input type="text" value={username} onChange={event => setUsername(event.target.value)}/>
           <label>Senha</label>
           <input type="password" value={password} onChange={event => setPassword(event.target.value)}/> 
-          <input className="button" type="submit" value="Enviar"/>
+          <button type="button">Enviar</button>
         </form>
       </main>
     </div>

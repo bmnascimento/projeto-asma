@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import Login from './Login'
+import './bootstrap.min.css'
+import Dashboard from './Dashboard'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Login />
+    <Dashboard />
   </React.StrictMode>,
   document.getElementById('root')
 )

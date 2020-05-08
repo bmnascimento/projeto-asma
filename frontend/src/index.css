@@ -5,3 +5,7 @@ body, html {
     sans-serif;
 }
 
+#root {
+  display: flex;
+  align-items: stretch;
+}

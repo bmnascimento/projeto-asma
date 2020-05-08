@@ -13,10 +13,19 @@ form {
   display: block;
 }
 
-form input {
-  width: 100%;
+form label {
+  margin-top: .2em;
+  margin-bottom: .2em;
+  display: block;
 }
 
-.button {
-  margin-top: .5em;
+form input {
+  width: 93%;
 }
+
+form button {
+  width: 100%;
+  margin-top: 1em;
+  height: 2.5em;
+}
+
