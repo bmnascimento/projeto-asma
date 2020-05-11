@@ -11,6 +11,7 @@ form {
   width: 300px;
   margin: auto;
   display: block;
+  text-align: center;
 }
 
 form label {
@@ -24,8 +25,8 @@ form input {
 }
 
 form button {
-  width: 100%;
-  margin-top: 1em;
+  width: 100px;
+  margin: .5em 0;
   height: 2.5em;
 }
 

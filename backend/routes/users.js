@@ -1,6 +1,7 @@
 const usersRouter = require('express').Router()
-const db = require('../models')
 const logger = require('../utils/logger')
+const db = require('../models')
+const usersRouter = require('./routes/users')
 
 usersRouter.get('/', async (request, response) => {
   const users = await User.findAll()
