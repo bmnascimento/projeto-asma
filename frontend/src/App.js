@@ -21,6 +21,7 @@ const App = () => {
           setNewPhone('')
           setNewName('')
         })
+        .catch(() => alert('nao foi possivel adicionar paciente'))
     } else {
       alert('Pessoa já adicionada')
     }
