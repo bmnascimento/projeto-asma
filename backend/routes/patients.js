@@ -24,13 +24,13 @@ patientsRouter.get('/:id', (request, response, next) => {
 })
 
 patientsRouter.post('/', (request, response, next) => {
-  const patient = {
+  const newPatient = {
     name: request.body.name,
     phone: request.body.phone
   }
 
-  db.Patient.create(patient)
-    .then(() => {
+  db.Patient.create(newPatient)
+    .then(patient => {
       response.json(patient)
     })
     .catch(error => next(error))
