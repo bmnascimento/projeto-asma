@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import patientService from './services/patients.js'
 
-const App = () => {
+const PatientMenu = () => {
   const [ patients, setPatients ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
@@ -27,27 +27,26 @@ const App = () => {
     }
   }
 
-  return (
-    <div>
-      <h1>Pacientes</h1>
-      <form onSubmit={handleSubmit}>
+  return(
+    <>
+        <h1>Pacientes</h1>
+        <form onSubmit={handleSubmit}>
         <div>
-          Nome: <input value={newName} onChange={event => setNewName(event.target.value)} />
+            Nome: <input value={newName} onChange={event => setNewName(event.target.value)} />
         </div>
         <div>
-          Telefone: <input value={newPhone} onChange={event => setNewPhone(event.target.value)} />
+            Telefone: <input value={newPhone} onChange={event => setNewPhone(event.target.value)} />
         </div>
         <div>
-          <button type="submit">Adicionar</button>
+            <button type="submit">Adicionar</button>
         </div>
-      </form>
-      <ul>
+        </form>
+        <ul>
         {patients.map(patient => 
-          <li key={patient.name}>{patient.name} {patient.phone}</li>
+            <li key={patient.name}>{patient.name} {patient.phone}</li>
         )}
-      </ul>
-    </div>
-  )
-}
+        </ul>
+    </>
+  )}
 
-export default App
+export default PatientMenu

@@ -1,5 +1,4 @@
 const patientsRouter = require('express').Router()
-const logger = require('../utils/logger')
 const db = require('../models')
 
 patientsRouter.get('/', (request, response, next) => {
