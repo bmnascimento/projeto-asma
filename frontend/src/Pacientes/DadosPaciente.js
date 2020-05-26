@@ -24,7 +24,7 @@ const DadosPacientes = () => {
     <>
       <div>
         <div>Nome: {patient.name}</div>
-        <div>Idade: </div>
+        <div>Idade: {patient.age}</div>
         <div>Tipo de asma: </div>
         <div>Observações: </div>
         <div>Última Consulta: </div>
