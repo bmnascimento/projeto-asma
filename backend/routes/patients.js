@@ -2,7 +2,7 @@ const patientsRouter = require('express').Router()
 const db = require('../models')
 
 patientsRouter.get('/', (request, response, next) => {
-  db.Patient.findAll()
+  db.Patient.findAll({ attributes: ['id', 'name', 'phone', 'fitbitId'] })
     .then(patients => {
       response.send(patients)
     })
@@ -12,7 +12,7 @@ patientsRouter.get('/', (request, response, next) => {
 patientsRouter.get('/:id', (request, response, next) => {
   const id = Number(request.params.id)
 
-  db.Patient.findByPk(id)
+  db.Patient.findByPk(id, { attributes: ['id', 'name', 'phone', 'fitbitId'] })
     .then(patient => {
       if (patient === null) {
         response.status(404).send({ error: 'resource not found' })
@@ -26,7 +26,8 @@ patientsRouter.get('/:id', (request, response, next) => {
 patientsRouter.post('/', (request, response, next) => {
   const newPatient = {
     name: request.body.name,
-    phone: request.body.phone
+    phone: request.body.phone,
+    fitbitId: request.body.fitbitId
   }
 
   db.Patient.create(newPatient)

@@ -24,10 +24,13 @@ const DadosPacientes = () => {
     <>
       <div>
         <div>Nome: {patient.name}</div>
-        <div>Idade: {patient.age}</div>
+        <div>Telefone: {patient.phone}</div>
+        <div>Idade: </div>
         <div>Tipo de asma: </div>
         <div>Observações: </div>
         <div>Última Consulta: </div>
+        <div>ID Fitbit: {patient.fitbitId}</div>
+        <a href="http://localhost:3001/auth/fitbit">Conectar ao Fitbit</a>
       </div>
 
       <br/>

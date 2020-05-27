@@ -6,6 +6,7 @@ const sequelize = new Sequelize(config.PGURI)
 module.exports = {
   Sequelize,
   sequelize,
-  Patient: require('./patients.js')(sequelize, Sequelize)
+  Patient: require('./patients.js')(sequelize, Sequelize),
+  DadosDiarios: require('./dadosDiarios.js')(sequelize, Sequelize)
 }
 

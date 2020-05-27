@@ -6,6 +6,7 @@ const ListaPacientes = () => {
   const [ patients, setPatients ] = useState(undefined) 
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
+  const [ newFitbitId, setNewFitbitId ] = useState('')
 
   useEffect(() => {
     patientService.getAll().then(response => setPatients(response))
@@ -16,7 +17,7 @@ const ListaPacientes = () => {
 
     const foundPatient = patients.find(patient => patient.name === newName)
     if (foundPatient === undefined) {
-      patientService.create({ name: newName, phone: newPhone })
+      patientService.create({ name: newName, phone: newPhone, fitbitId: newFitbitId })
         .then(response => {
           setPatients(patients.concat(response))
           setNewPhone('')
@@ -42,6 +43,10 @@ const ListaPacientes = () => {
               <label htmlFor="phoneInput">Telefone:</label>
               <input value={newPhone} onChange={event => setNewPhone(event.target.value)} className="form-control" id="phoneInput"/>
             </div>
+            <div className="form-group">
+              <label htmlFor="fitbitIdInput">ID Fitbit:</label>
+              <input value={newFitbitId} onChange={event => setNewFitbitId(event.target.value)} className="form-control" id="fitbitIdInput"/>
+            </div>
             <button type="submit" className="btn btn-primary">Adicionar</button>
           </form>
         </div>
@@ -59,9 +64,9 @@ const ListaPacientes = () => {
           )}
           </div>
           :
-          <div class="d-flex align-items-center my-3">
+          <div className="d-flex align-items-center my-3">
             Carregando...
-            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+            <div className="spinner-border ml-auto" role="status" aria-hidden="true"></div>
           </div>
           }
     </div>

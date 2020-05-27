@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  return(sequelize.define('patient', {
+  return(sequelize.define('dadosDiarios', {
     name: {
       type: Sequelize.STRING,
       allowNull: false
