@@ -1,9 +1,10 @@
 import axios from 'axios'
-const baseUrl = '/api/patients'
+const baseUrl = '/api/patients/data'
 
-
-/*const getData () = => {
-    return axios.get(baseUrl).then(response => response.data)
+const getData = (id, date) => {
+  return axios.get(`${baseUrl}/${id}/${date}`).then(response => response.data)
 }
 
-*/
+export default {
+  getData
+}

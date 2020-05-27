@@ -52,7 +52,7 @@ const DadosPacientes = () => {
           <Resumo />
         </Route>
         <Route path={`${url}/dados`}>
-          <Dados />
+          <Dados id={id}/>
         </Route>
         <Route path={`${url}/metas`}>
           <Metas />

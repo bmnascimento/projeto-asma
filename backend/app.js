@@ -1,11 +1,11 @@
 const config = require('./utils/config.js')
 const express = require('express')
-const axios = require('axios')
 const passport = require('passport')
 const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy
 const logger = require('./utils/logger')
-const middleware = require('./utils/middleware') 
+const middleware = require('./utils/middleware')
 const patientsRouter = require('./routes/patients')
+const patientsDataRouter = require('./routes/dataPatients')
 const db = require('./models')
 
 const app = express()
@@ -55,6 +55,7 @@ passport.use('fitbit', new FitbitStrategy({
 ))
 
 app.use('/api/patients', patientsRouter)
+app.use('/api/patients/data', patientsDataRouter)
 
 app.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile','sleep','weight'] }))
 
@@ -63,25 +64,6 @@ app.get('/auth/fitbit/callback',
     successRedirect: '/',
     failureRedirect: '/auth/fitbit/failure'
 }))
-
-app.get('/auth/fitbit/failure', () => '<div class="alert alert-danger" role="alert"> Não foi possível conectar ao Fitbit</div>')
-
-let accessToken = ''
-
-db.Patient.findByPk(12, { attributes: ['accessToken'] })
-  .then(patient => {
-    axios.get(`https://api.fitbit.com/1/user/8GMKFH/activities/date/2020-05-25.json`, {
-      headers: {
-        Authorization: 'Bearer ' + patient.accessToken
-      }
-    })
-    .then(response => {
-      logger.info('Resposta:', response.data.summary.distances)
-    })
-    .catch(error => {
-      logger.error(error)
-    })
-  })
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
