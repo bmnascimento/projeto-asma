@@ -5,6 +5,7 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const patientsRouter = require('./routes/patients')
+const sintomasRouter = require('./routes/sintomas')
 const patientsDataRouter = require('./routes/dataPatients')
 const db = require('./models')
 
@@ -28,7 +29,7 @@ passport.deserializeUser(function(user, done) {
 passport.use('fitbit', new FitbitStrategy({
     clientID: config.FITBIT_CLIENT_ID,
     clientSecret: config.FITBIT_CLIENT_SECRET,
-    callbackURL: "https://young-hollows-35414.herokuapp.com/auth/fitbit/callback"
+    callbackURL: "http://localhost:3001/auth/fitbit/callback"
   },
   (accessToken, refreshToken, profile, done) => {
     logger.info('Access Token:', accessToken)
@@ -56,6 +57,7 @@ passport.use('fitbit', new FitbitStrategy({
 
 app.use('/api/patients', patientsRouter)
 app.use('/api/patients/data', patientsDataRouter)
+app.use('/api/sintomas', sintomasRouter)
 
 app.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile','sleep','weight'] }))
 
