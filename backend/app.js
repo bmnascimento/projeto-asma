@@ -5,6 +5,7 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const patientsRouter = require('./routes/patients')
+const sintomasRouter = require('./routes/sintomas')
 const patientsDataRouter = require('./routes/dataPatients')
 const db = require('./models')
 
@@ -56,6 +57,7 @@ passport.use('fitbit', new FitbitStrategy({
 
 app.use('/api/patients', patientsRouter)
 app.use('/api/patients/data', patientsDataRouter)
+app.use('/api/sintomas', sintomasRouter)
 
 app.get('/auth/fitbit', passport.authenticate('fitbit', { scope: ['activity','heartrate','location','profile','sleep','weight'] }))
 

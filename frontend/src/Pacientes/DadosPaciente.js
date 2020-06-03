@@ -30,7 +30,7 @@ const DadosPacientes = () => {
         <div>Observações: </div>
         <div>Última Consulta: </div>
         <div>ID Fitbit: {patient.fitbitId}</div>
-        <a href="http://localhost:3001/auth/fitbit">Conectar ao Fitbit</a>
+        <a href="https://young-hollows-35414.herokuapp.com/auth/fitbit">Conectar ao Fitbit</a>
       </div>
 
       <br/>
