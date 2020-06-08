@@ -5,8 +5,8 @@ const FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
 const patientsRouter = require('./routes/patients')
-const sintomasRouter = require('./routes/sintomas')
 const patientsDataRouter = require('./routes/dataPatients')
+const sintomasRouter = require('./routes/sintomas')
 const db = require('./models')
 
 const app = express()

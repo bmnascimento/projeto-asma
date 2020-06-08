@@ -5,7 +5,7 @@ sintomasRouter.get('/:id', (request, response, next) => {
   const id = Number(request.params.id)
 
   db.Sintomas.findAll({ 
-    where: {patientId: id},
+    where: { patientId: id },
   })
     .then(sintomas => {
       if (sintomas === []) {
@@ -17,9 +17,7 @@ sintomasRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-
 sintomasRouter.post('/:id', (request, response, next) => {
-
   const id = Number(request.params.id)
 
   const newSintoma = {
