@@ -27,12 +27,16 @@ patientsRouter.post('/', (request, response, next) => {
   const newPatient = {
     name: request.body.name,
     phone: request.body.phone,
-    fitbitId: request.body.fitbitId
+    fitbitId: ''
   }
 
   db.Patient.create(newPatient)
     .then(patient => {
-      response.json(patient)
+      response.json({
+        name: patient.name,
+        phone: patient.phone,
+        fitbitId: patient.fitbitId
+      })
     })
     .catch(error => next(error))
 })
@@ -52,12 +56,17 @@ patientsRouter.put('/:id', (request, response, next) => {
 
   const patient = {
     name: request.body.name,
-    phone: request.body.phone
+    phone: request.body.phone,
+    fitbitId: request.body.fitbitId
   }
 
   db.Patient.update(patient, { where: { id } })
     .then(() => {
-      response.json(patient)
+      response.json({
+        name: patient.name,
+        phone: patient.phone,
+        fitbitId: patient.fitbitId
+      })
     })
     .catch(error => next(error))
 })

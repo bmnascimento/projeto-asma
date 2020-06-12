@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch, Route, NavLink
 } from 'react-router-dom'
 
@@ -21,7 +21,7 @@ const Dashboard = () => {
             <nav className="nav nav-pills flex-column">
               <NavLink className="nav-item nav-link" exact to="/">Home</NavLink>
               <NavLink className="nav-item nav-link" to="/pacientes">Pacientes</NavLink>
-              <NavLink className="nav-item nav-link" to="/FAQ">FAQ</NavLink>
+              <NavLink className="nav-item nav-link" to="/faq">FAQ</NavLink>
               <NavLink className="nav-item nav-link" to="/ajuda">Ajuda</NavLink>
             </nav>
           </div>

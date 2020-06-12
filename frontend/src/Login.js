@@ -1,18 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
-    BrowserRouter as Router,
-    Switch, Route, NavLink
+    BrowserRouter as Router
   } from 'react-router-dom'
-import { Form, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const Login = () => {
-  const [ paciente, setPaciente ] = useState('')
-  const [ number, setNumber ] = useState('')
-
-  const handleSubmit = event => {
-    event.preventDefault()
-  }
-
   return (
     <Router>
       <header className="navbar navbar-dark bg-dark">
@@ -20,8 +13,8 @@ const Login = () => {
       </header>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-sm-9 col-md-12  bg-light py-5  border">
-          <Form className="col-sm-3 col-md-3 offset-sm-4  bg-light py-3 border">
+          <div className="col-sm-9 col-md-12 bg-light py-5 border">
+          <Form className="col-sm-3 col-md-3 offset-sm-4 bg-light py-3 border">
             <Form.Group controlId="formBasicEmail">
             <Form.Label>Nome</Form.Label>
             <Form.Control type="email" placeholder="Nome" />

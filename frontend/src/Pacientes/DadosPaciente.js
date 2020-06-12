@@ -29,8 +29,8 @@ const DadosPacientes = () => {
         <div>Tipo de asma: </div>
         <div>Observações: </div>
         <div>Última Consulta: </div>
-        <div>ID Fitbit: {patient.fitbitId}</div>
-        <a href="https://young-hollows-35414.herokuapp.com/auth/fitbit">Conectar ao Fitbit</a>
+        <div>ID Fitbit: {patient.fitbitId === '' ? <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a> : patient.fitbitId}</div>
+        
       </div>
 
       <br/>

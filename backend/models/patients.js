@@ -17,9 +17,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true
-    },
-    fitbitProfile: {
-      type: Sequelize.JSON
     }
   }, {
     // options

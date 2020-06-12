@@ -6,7 +6,6 @@ const ListaPacientes = () => {
   const [ patients, setPatients ] = useState(undefined) 
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
-  const [ newFitbitId, setNewFitbitId ] = useState('')
 
   useEffect(() => {
     patientService.getAll().then(response => setPatients(response))
@@ -17,7 +16,7 @@ const ListaPacientes = () => {
 
     const foundPatient = patients.find(patient => patient.name === newName)
     if (foundPatient === undefined) {
-      patientService.create({ name: newName, phone: newPhone, fitbitId: newFitbitId })
+      patientService.create({ name: newName, phone: newPhone })
         .then(response => {
           setPatients(patients.concat(response))
           setNewPhone('')
@@ -42,10 +41,6 @@ const ListaPacientes = () => {
             <div className="form-group">
               <label htmlFor="phoneInput">Telefone:</label>
               <input value={newPhone} onChange={event => setNewPhone(event.target.value)} className="form-control" id="phoneInput"/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="fitbitIdInput">ID Fitbit:</label>
-              <input value={newFitbitId} onChange={event => setNewFitbitId(event.target.value)} className="form-control" id="fitbitIdInput"/>
             </div>
             <button type="submit" className="btn btn-primary">Adicionar</button>
           </form>
