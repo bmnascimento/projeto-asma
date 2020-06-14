@@ -6,6 +6,7 @@ const sequelize = new Sequelize(config.PGURI)
 const Patient = require('./patients.js')(sequelize, Sequelize)
 const DadosDiarios = require('./dadosDiarios.js')(sequelize, Sequelize)
 const Sintomas = require('./sintomas.js')(sequelize, Sequelize)
+const Usuarios = require('./usuarios')(sequelize, Sequelize)
 
 Patient.hasMany(Sintomas)
 
@@ -15,4 +16,5 @@ module.exports = {
   Patient,
   DadosDiarios,
   Sintomas,
+  Usuarios
 }

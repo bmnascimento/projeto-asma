@@ -1,28 +1,36 @@
 import React from 'react'
-import {
-  HashRouter as Router,
-  Switch, Route, NavLink
-} from 'react-router-dom'
-
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom'
 import ListaPacientes from './Pacientes/ListaPacientes'
 import DadosPaciente from './Pacientes/DadosPaciente'
-import Home from './Home'
-import Ajuda from './Ajuda'
+import ListaUsuarios from './ListaUsuarios'
+import Navbar from 'react-bootstrap/Navbar'
+import Button from 'react-bootstrap/Button'
 
-const Dashboard = () => {
+const Dashboard = ({ user, setUser }) => {
+  const logout = () => {
+    window.localStorage.removeItem('usuarioLogado')
+    setUser(null)
+  }
+
   return (
-    <Router>
-      <header className="navbar navbar-dark bg-dark">
-        <h1 className="navbar-brand">Dashboard</h1>
+    <>
+      <header>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand>Dashboard</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text>
+              Logado como {user.email} <Button variant="dark" onClick={logout}>Logout</Button>
+            </Navbar.Text>
+          </Navbar.Collapse>
+        </Navbar>
       </header>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-3 col-md-2 bg-light py-3 border">
+      <main className="container-fluid h-100">
+        <div className="row h-100">
+          <div className="col-sm-3 col-md-2 bg-light py-3 border-right">
             <nav className="nav nav-pills flex-column">
-              <NavLink className="nav-item nav-link" exact to="/">Home</NavLink>
               <NavLink className="nav-item nav-link" to="/pacientes">Pacientes</NavLink>
-              <NavLink className="nav-item nav-link" to="/faq">FAQ</NavLink>
-              <NavLink className="nav-item nav-link" to="/ajuda">Ajuda</NavLink>
+              <NavLink className="nav-item nav-link" to="/usuarios">Usuários</NavLink>
             </nav>
           </div>
 
@@ -34,20 +42,17 @@ const Dashboard = () => {
               <Route path="/pacientes">
                 <ListaPacientes />
               </Route>
-              <Route path="/ajuda">
-                <Ajuda />
+              <Route path="/usuarios">
+                <ListaUsuarios />
               </Route>
               <Route path="/">
-                <Home />
+                <Redirect to="/pacientes"/>
               </Route>
             </Switch>
           </main>
         </div>
-      </div>
-      <footer className="container-fluid text-center bg-dark text-muted p-3">
-        O código desse site está disponível no <a href="https://github.com/bmnascimento/projeto-asma">GitHub</a>
-      </footer>
-    </Router>
+      </main>
+    </>
   )
 }
 

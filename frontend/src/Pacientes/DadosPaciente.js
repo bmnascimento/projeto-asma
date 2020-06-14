@@ -29,7 +29,7 @@ const DadosPacientes = () => {
         <div>Tipo de asma: </div>
         <div>Observações: </div>
         <div>Última Consulta: </div>
-        <div>ID Fitbit: {patient.fitbitId === '' ? <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a> : patient.fitbitId}</div>
+        <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
         
       </div>
 

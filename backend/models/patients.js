@@ -8,15 +8,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING
     },
     accessToken: {
-      type: Sequelize.STRING
-    },
-    refreshToken: {
-      type: Sequelize.STRING
+      type: Sequelize.TEXT
     },
     fitbitId: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: true
+      type: Sequelize.STRING
     }
   }, {
     // options

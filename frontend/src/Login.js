@@ -1,47 +1,82 @@
-import React from 'react'
-import {
-    BrowserRouter as Router
-  } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Container from 'react-bootstrap/Container'
+import Navbar from 'react-bootstrap/Navbar'
+import Spinner from 'react-bootstrap/Spinner'
 
-const Login = () => {
+import loginService from './services/login'
+
+const Login = ({ setUser }) => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [lembrarme, setLembrarme] = useState(false)
+  const [carregando, setCarregando] = useState(false)
+
+  const history = useHistory()
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+
+    try {
+      setCarregando(true)
+
+      const user = await loginService.login({
+        email,
+        password
+      })
+      
+      if (lembrarme)
+        window.localStorage.setItem('usuarioLogado', JSON.stringify(user))
+
+      setUser(user)
+      setCarregando(false)
+      history.push('/')
+
+    } catch (exception) {
+      console.log('Wrong credentials')
+    }
+  }
+
   return (
-    <Router>
-      <header className="navbar navbar-dark bg-dark">
-        <h1 className="navbar-brand">Login</h1>
+    <>
+      <header>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand>Login</Navbar.Brand>
+        </Navbar>
       </header>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-9 col-md-12 bg-light py-5 border">
-          <Form className="col-sm-3 col-md-3 offset-sm-4 bg-light py-3 border">
-            <Form.Group controlId="formBasicEmail">
-            <Form.Label>Nome</Form.Label>
-            <Form.Control type="email" placeholder="Nome" />
-          </Form.Group>
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Senha" />
-          </Form.Group>
-          <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Lembrar-me" />
-            
-          </Form.Group>
-          <Button className = "offset-sm-2" variant="info" type="Entrar">
-            Registrar
-          </Button>
-          <Button className = "offset-sm-1" variant="primary" type="Entrar">
-            Entrar
-          </Button>
-          </Form>
-          </div>
-         
-        </div>
-      </div>
-      <footer className="container-fluid text-center bg-dark text-muted p-3">
-        O código desse site está disponível no <a href="https://github.com/bmnascimento/projeto-asma">GitHub</a>
-      </footer>
-    </Router>
+      <main className="bg-light">
+        <Container>
+          <Row className="justify-content-center">
+            <Col className="col-md-5 col-lg-4 p-3 m-4 border">
+              <Form onSubmit={handleSubmit} >
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control type="email" placeholder="Email" value={email} onChange={({ target }) => setEmail(target.value)} />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Senha</Form.Label>
+                  <Form.Control type="password" placeholder="Senha" value={password} onChange={({ target }) => setPassword(target.value)} />
+                </Form.Group>
+
+                <Form.Group controlId="formBasicCheckbox">
+                  <Form.Check type="checkbox" label="Lembrar-me" checked={lembrarme} onChange={({ target }) => setLembrarme(target.checked)} />
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                  { carregando ? <Spinner animation="border" role="status" size="sm"/> : 'Entrar' }
+                </Button>
+                
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </main>
+    </>
   )
 }
 
