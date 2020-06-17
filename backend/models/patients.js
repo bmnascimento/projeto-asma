@@ -9,9 +9,6 @@ module.exports = (sequelize, Sequelize) => {
     },
     accessToken: {
       type: Sequelize.TEXT
-    },
-    fitbitId: {
-      type: Sequelize.STRING
     }
   }, {
     // options

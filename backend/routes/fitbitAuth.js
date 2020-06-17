@@ -1,11 +1,10 @@
 const config = require('../utils/config.js')
-const axios = require('axios')
-const fitbitRouter = require('express').Router()
+const fitbitAuth = require('express').Router()
 const db = require('../models')
 
 const redirectUri = config.NODE_ENV === 'development' ? 'http://localhost:3001/auth/fitbit/callback' : 'https://young-hollows-35414.herokuapp.com/auth/fitbit/callback'
 
-fitbitRouter.get('/callback', async (request, response, next) => {
+fitbitAuth.get('/callback', async (request, response, next) => {
   const id = request.query.state
 
   const tokenParams = {
@@ -31,7 +30,7 @@ fitbitRouter.get('/callback', async (request, response, next) => {
   }
 })
 
-fitbitRouter.get('/:id', async (request, response) => {
+fitbitAuth.get('/:id', async (request, response) => {
   const authorizationUri = config.oauth2.authorizeURL({
     redirect_uri: redirectUri,
     scope: 'activity profile',
@@ -41,4 +40,4 @@ fitbitRouter.get('/:id', async (request, response) => {
   response.redirect(authorizationUri)
 })
 
-module.exports = fitbitRouter
+module.exports = fitbitAuth

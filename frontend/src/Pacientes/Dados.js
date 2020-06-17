@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
 import patientDataService from '../services/dataPatients.js'
 
-const Dados = ({ id }) => {
+const Dados = ({ fitbitId, accessToken }) => {
   const [ linhas, setLinhas ] = useState([])
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Dados = ({ id }) => {
 
     const date = new Date()
     for (let i = 0; i < quantidadeLinhas; i++) {
-      promises.push(patientDataService.getData(id, formatDate(date)))      
+      promises.push(patientDataService.getData(fitbitId, formatDate(date), accessToken))
       date.setDate(date.getDate()-1)
     }
 
@@ -32,7 +32,7 @@ const Dados = ({ id }) => {
         }
       })
 
-  }, [id])
+  }, [fitbitId, accessToken])
 
   return (
     <div className="border-right border-bottom border-left p-3">

@@ -9,13 +9,23 @@ import Resumo from './Resumo'
 import Dados from './Dados'
 import Metas from './Metas'
 
-const DadosPacientes = () => {
+const PerfilPaciente = () => {
   const [ patient, setPatient ] = useState({})
 
   const id = useParams().id
 
   useEffect(() => {
-    patientService.getOne(id).then(response => setPatient(response))
+    patientService.getOne(id).then(response => {
+      let patient = response
+
+      if (patient.accessToken === 'expired') {
+        patientService.refreshToken(id).then(response => {
+          patient.accessToken = response.accessToken
+        })
+      }
+
+      setPatient(patient)
+    })
   }, [id])
   
   const { url } = useRouteMatch()
@@ -25,10 +35,6 @@ const DadosPacientes = () => {
       <div>
         <div>Nome: {patient.name}</div>
         <div>Telefone: {patient.phone}</div>
-        <div>Idade: </div>
-        <div>Tipo de asma: </div>
-        <div>Observações: </div>
-        <div>Última Consulta: </div>
         <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
         
       </div>
@@ -52,7 +58,7 @@ const DadosPacientes = () => {
           <Resumo />
         </Route>
         <Route path={`${url}/dados`}>
-          <Dados id={id}/>
+          <Dados fitbitId={patient.fitbitId} accessToken={patient.accessToken} />
         </Route>
         <Route path={`${url}/metas`}>
           <Metas />
@@ -61,4 +67,4 @@ const DadosPacientes = () => {
     </>
   )}
 
-export default DadosPacientes
+export default PerfilPaciente

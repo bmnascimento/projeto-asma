@@ -1,10 +1,18 @@
 import axios from 'axios'
-const baseUrl = '/api/patients/data'
 
-const getData = (id, date) => {
-  return axios.get(`${baseUrl}/${id}/${date}`).then(response => response.data)
+const getData = (fitbitId, date, accessToken) => {
+  return axios.get(`https://api.fitbit.com/1/user/${fitbitId}/activities/date/${date}.json`, {
+    headers: {
+      Authorization: 'Bearer ' + accessToken
+    }
+  }).then(response => response.data)
+}
+
+const refreshToken = (id) => {
+  return axios.post(`/api/patients/refresh/${id}`).then(response => response.data)
 }
 
 export default {
-  getData
+  getData,
+  refreshToken
 }

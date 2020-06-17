@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, NavLink, Redirect } from 'react-router-dom'
 import ListaPacientes from './Pacientes/ListaPacientes'
-import DadosPaciente from './Pacientes/DadosPaciente'
+import PerfilPaciente from './Pacientes/PerfilPaciente'
 import ListaUsuarios from './ListaUsuarios'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
@@ -37,7 +37,7 @@ const Dashboard = ({ user, setUser }) => {
           <main className="col-sm-9 col-md-10 bg-white p-4">
             <Switch>
               <Route path="/pacientes/:id">
-                <DadosPaciente />
+                <PerfilPaciente />
               </Route>
               <Route path="/pacientes">
                 <ListaPacientes />
