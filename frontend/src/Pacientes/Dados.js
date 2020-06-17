@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
-import patientDataService from '../services/dataPatients.js'
+import patientService from '../services/patients.js'
 
 const Dados = ({ fitbitId, accessToken }) => {
   const [ linhas, setLinhas ] = useState([])
@@ -11,7 +11,7 @@ const Dados = ({ fitbitId, accessToken }) => {
 
     const date = new Date()
     for (let i = 0; i < quantidadeLinhas; i++) {
-      promises.push(patientDataService.getData(fitbitId, formatDate(date), accessToken))
+      promises.push(patientService.getData(fitbitId, formatDate(date), accessToken))
       date.setDate(date.getDate()-1)
     }
 
