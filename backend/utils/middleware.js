@@ -9,8 +9,6 @@ const errorHandler = (error, request, response, next) => {
   
   if (error.name === 'SequelizeUniqueConstraintError') {
     return response.status(400).json({ error: error.message })
-  } else if (error.isAxiosError) {
-    logger.error(error.response.data)
   }
 }
 
