@@ -1,10 +1,12 @@
 const config = require('../utils/config.js')
+const axios = require('axios')
 const patientsRouter = require('express').Router()
 const db = require('../models')
+const { compareSync } = require('bcrypt')
 
 patientsRouter.get('/', (request, response, next) => {
   db.Patient.findAll({
-    attributes: ['id', 'name', 'phone'],
+    attributes: ['id', 'name'],
     order: [
       ['name', 'ASC'],
     ]
@@ -15,37 +17,72 @@ patientsRouter.get('/', (request, response, next) => {
     .catch(error => next(error))
 })
 
+let refreshingToken = false
+
+patientsRouter.get('/data/:id/:date', async (request, response, next) => {
+  const id = Number(request.params.id)
+  const date = request.params.date
+
+  try {
+    const patient = await db.Patient.findByPk(id, { attributes: ['accessToken'] })
+
+    let token = config.oauth2.createToken(JSON.parse(patient.accessToken))
+
+    if (token.expired() && !refreshingToken) {
+      refreshingToken = true
+      
+      token = await token.refresh()
+      await db.Patient.update({ accessToken: JSON.stringify(token) }, { where: { id } })
+      
+      refreshingToken = false
+
+    } else if (refreshingToken) {
+      const waitRefresh = resolve => {
+        if (refreshingToken) {
+          setTimeout(() => waitRefresh(resolve), 500)
+        } else {
+          resolve()
+        }
+      }
+      await new Promise(resolve => waitRefresh(resolve))
+    }
+
+    const fitbitResponse = await axios.get(`https://api.fitbit.com/1/user/${token.token.user_id}/activities/date/${date}.json`, {
+      headers: {
+        Authorization: 'Bearer ' + token.token.access_token
+      }
+    })
+    
+    response.json(fitbitResponse.data)
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 patientsRouter.get('/:id', async (request, response, next) => {
   const id = Number(request.params.id)
 
   try {
-    patient = await db.Patient.findByPk(id, { attributes: ['id', 'name', 'phone', 'accessToken'] })
+    const patient = await db.Patient.findByPk(id, { attributes: ['id', 'name', 'phone', 'accessToken'] })
 
     if (patient === null) {
       response.status(404).send({ error: 'resource not found' })
     } else {
       if (patient.accessToken !== null) {
-        let token = config.oauth2.createToken(JSON.parse(patient.accessToken))
-
-        if (token.expired()) {
-          patient.accessToken = 'expired'
-        } else {
-          patient.accessToken = token.token.access_token
-        }
+        let token = JSON.parse(patient.accessToken)
 
         response.json({
           id: patient.id,
           name: patient.name,
           phone: patient.phone,
-          accessToken: patient.accessToken,
-          fitbitId: token.token.user_id
+          fitbitId: token.user_id
         })
       } else {
         response.json({
           id: patient.id,
           name: patient.name,
           phone: patient.phone,
-          accessToken: null,
           fitbitId: null
         })
       }
@@ -69,31 +106,6 @@ patientsRouter.post('/', (request, response, next) => {
       })
     })
     .catch(error => next(error))
-})
-
-patientsRouter.post('/refresh/:id', async (request, response, next) => {
-  const id = Number(request.params.id)
-
-  try {
-    patient = await db.Patient.findByPk(id, { attributes: ['accessToken'] })
-
-    if (patient === null) {
-      response.status(404).send({ error: 'patient not found' })
-    } else if (patient.accessToken === null) {
-      response.status(400).send({ error: 'refresh token invalid' })
-    } else {
-      let token = config.oauth2.createToken(JSON.parse(patient.accessToken))
-      token = await token.refresh()
-      
-      await db.Patient.update({ accessToken: JSON.stringify(token) }, { where: { id } })
-
-      response.json({
-        accessToken: token.token.access_token
-      })
-    }
-  } catch (error) {
-    next(error)
-  }
 })
 
 patientsRouter.delete('/:id', (request, response, next) => {

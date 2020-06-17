@@ -11,35 +11,58 @@ import Metas from './Metas'
 
 const PerfilPaciente = () => {
   const [ patient, setPatient ] = useState({})
+  const [ linhas, setLinhas ] = useState([])
 
   const id = useParams().id
 
   useEffect(() => {
-    patientService.getOne(id).then(response => {
-      let patient = response
-
-      if (patient.accessToken === 'expired') {
-        patientService.refreshToken(id).then(response => {
-          patient.accessToken = response.accessToken
-        })
-      }
-
+    const fetchData = async () => {
+      const patient = await patientService.getOne(id)
       setPatient(patient)
-    })
+
+      if (patient.fitbitId) {
+        let promises = []
+        const quantidadeLinhas = 5
+
+        let date = new Date()
+        for (let i = 0; i < quantidadeLinhas; i++) {
+          promises.push(patientService.getData(id, formatDate(date)))
+          date.setDate(date.getDate() - 1)
+        }
+
+        const responses = await Promise.all(promises)
+
+        date = new Date()
+
+        for (let i = 0; i < quantidadeLinhas; i++) {
+          const response = responses[i]
+
+          setLinhas(linhas => linhas.concat({
+            data: formatDate(date),
+            numPassos: response.summary.steps,
+            minutosAtivos: response.summary.fairlyActiveMinutes + response.summary.veryActiveMinutes,
+            minutosSedentarios: response.summary.sedentaryMinutes
+          }))
+          date.setDate(date.getDate() - 1)
+        }
+      }
+    }
+
+    fetchData()
   }, [id])
-  
+
   const { url } = useRouteMatch()
 
-  return(
+  return (
     <>
       <div>
         <div>Nome: {patient.name}</div>
         <div>Telefone: {patient.phone}</div>
         <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
-        
+
       </div>
 
-      <br/>
+      <br />
 
       <ul className="nav nav-tabs">
         <li className="nav-item">
@@ -58,13 +81,27 @@ const PerfilPaciente = () => {
           <Resumo />
         </Route>
         <Route path={`${url}/dados`}>
-          <Dados fitbitId={patient.fitbitId} accessToken={patient.accessToken} />
+          <Dados linhas={linhas} />
         </Route>
         <Route path={`${url}/metas`}>
           <Metas />
         </Route>
       </Switch>
     </>
-  )}
+  )
+}
+
+const formatDate = date => {
+  let month = '' + (date.getMonth() + 1)
+  let day = '' + date.getDate()
+  let year = date.getFullYear()
+
+  if (month.length < 2)
+    month = '0' + month
+  if (day.length < 2)
+    day = '0' + day
+
+  return [year, month, day].join('-')
+}
 
 export default PerfilPaciente
