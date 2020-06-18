@@ -57,7 +57,11 @@ const PerfilPaciente = () => {
     <>
       <div>
         <div>Nome: {patient.name}</div>
+        <div>Peso: {patient.height}</div>
+        <div>Altura: {patient.weight}</div>
         <div>Telefone: {patient.phone}</div>
+        <div>RGHG: {patient.rghg}</div>
+        <div>Data de Nascimento: {patient.birthDate}</div>
         <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
 
       </div>

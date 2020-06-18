@@ -5,6 +5,7 @@ import PerfilPaciente from './Pacientes/PerfilPaciente'
 import ListaUsuarios from './ListaUsuarios'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
+import CadastroPaciente from './Pacientes/CadastroPaciente'
 
 const Dashboard = ({ user, setUser }) => {
   const logout = () => {
@@ -36,6 +37,9 @@ const Dashboard = ({ user, setUser }) => {
 
           <main className="col-sm-9 col-md-10 bg-white p-4">
             <Switch>
+              <Route path="/pacientes/cadastro">
+                <CadastroPaciente />
+              </Route>
               <Route path="/pacientes/:id">
                 <PerfilPaciente />
               </Route>

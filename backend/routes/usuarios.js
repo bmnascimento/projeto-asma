@@ -15,8 +15,7 @@ usuariosRouter.get('/', async (request, response, next) => {
 
 usuariosRouter.post('/', async (request, response, next) => {
   try {
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(request.body.password, saltRounds)
+    const passwordHash = await bcrypt.hash(request.body.password, 10)
 
     const usuario = {
       email: request.body.email,

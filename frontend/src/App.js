@@ -17,7 +17,7 @@ const App = () => {
           <Login setUser={setUser} />
         </Route>
         <Route path="/">
-          {user ? <Dashboard user={user} setUser={setUser} /> : <Redirect to="/login" />}
+          {user ? user.type === 'profissional' ? <Dashboard user={user} setUser={setUser} /> : 'paciente' : <Redirect to="/login" />}
         </Route>
       </Switch>
       <footer className="text-center bg-dark text-muted p-3 mt-auto">

@@ -2,7 +2,7 @@ const config = require('../utils/config.js')
 const axios = require('axios')
 const patientsRouter = require('express').Router()
 const db = require('../models')
-const { compareSync } = require('bcrypt')
+const bcrypt = require('bcrypt')
 
 patientsRouter.get('/', (request, response, next) => {
   db.Patient.findAll({
@@ -118,22 +118,35 @@ patientsRouter.delete('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-patientsRouter.put('/:id', (request, response, next) => {
+patientsRouter.put('/:id', async (request, response, next) => {
   const id = Number(request.params.id)
 
-  const patient = {
-    name: request.body.name,
-    phone: request.body.phone
-  }
+  try {
+    const patient = {
+      name: request.body.name,
+      phone: request.body.phone,
+      height: request.body.height,
+      weight: request.body.weight,
+      rghg: request.body.rghg,
+      cpf: request.body.cpf,
+      birthDate: request.body.birthDate,
+      passwordHash: await bcrypt.hash(request.body.password, 10)
+    }
 
-  db.Patient.update(patient, { where: { id } })
-    .then(() => {
-      response.json({
-        name: patient.name,
-        phone: patient.phone
-      })
+    await db.Patient.update(patient, { where: { id } })
+
+    response.json({
+      name: request.body.name,
+      phone: request.body.phone,
+      height: request.body.height,
+      weight: request.body.weight,
+      rghg: request.body.rghg,
+      cpf: request.body.cpf,
+      birthDate: request.body.birthDate,
     })
-    .catch(error => next(error))
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = patientsRouter
