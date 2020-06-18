@@ -1,58 +1,28 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import usuarioService from './services/usuarios.js'
-import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 
 const ListaUsuarios = () => {
-  const [ usuarios, setUsuarios ] = useState(undefined) 
-  const [ newEmail, setNewEmail ] = useState('')
-  const [ newPassword, setNewPassword ] = useState('')
+  const [ usuarios, setUsuarios ] = useState(undefined)
 
   useEffect(() => {
     usuarioService.getAll().then(response => setUsuarios(response))
   }, [])
-  
-  const handleSubmit = event => {
-    event.preventDefault()
-
-    const usuarioEncontrado = usuarios.find(usuario => usuario.rghg === newEmail)
-    if (usuarioEncontrado === undefined) {
-      usuarioService.create({ name: newEmail, phone: newPassword })
-        .then(response => {
-          setUsuarios(usuarios.concat(response))
-          setNewPassword('')
-          setNewEmail('')
-        })
-        .catch(() => alert('nao foi possivel adicionar paciente'))
-    } else {
-      alert('Pessoa já adicionada')
-    }
-  }
 
   return(
-    <div style={{ width: '250px' }}>
+    <div style={{ width: '300px' }}>
+        <Link to="/usuarios/cadastro"><Button className="float-right mt-1">Novo</Button></Link>
         <h1>Usuários</h1>
-
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formEmail">
-            <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Email" value={newEmail} onChange={event => setNewEmail(event.target.value)} />
-          </Form.Group>
-          <Form.Group controlId="formPassword">
-            <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Senha" value={newPassword} onChange={event => setNewPassword(event.target.value)} />
-          </Form.Group>
-          <Button type="submit" variant="primary">Adicionar</Button>
-        </Form>
 
         {usuarios ?
           <div className="list-group my-3">
           {usuarios.map(usuario => 
             <div
               key={usuario.id}
-              className="list-group-item list-group-item-action"
+              className="list-group-item d-flex justify-content-between align-items-center"
             >
-                {usuario.rghg}
+                {usuario.name} - {usuario.rghg} {usuario.type === 'admin' && <span class="badge badge-primary badge-pill">Admin</span>}
             </div>
           )}
           </div>

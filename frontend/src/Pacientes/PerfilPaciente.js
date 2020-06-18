@@ -4,14 +4,16 @@ import {
   useParams, useRouteMatch
 } from 'react-router-dom'
 import patientService from '../services/patients.js'
+import Spinner from 'react-bootstrap/Spinner'
 
 import Resumo from './Resumo'
 import Dados from './Dados'
 import Metas from './Metas'
 
 const PerfilPaciente = () => {
-  const [ patient, setPatient ] = useState({})
-  const [ linhas, setLinhas ] = useState([])
+  const [patient, setPatient] = useState(undefined)
+  const [linhas, setLinhas] = useState([])
+  const [dataFormatada, setDataFormatada] = useState()
 
   const id = useParams().id
 
@@ -19,6 +21,8 @@ const PerfilPaciente = () => {
     const fetchData = async () => {
       const patient = await patientService.getOne(id)
       setPatient(patient)
+      const dataFormatada = new Date(patient.birthDate)
+      setDataFormatada(dataFormatada.toLocaleDateString("pt-BR"))
 
       if (patient.fitbitId) {
         let promises = []
@@ -55,42 +59,51 @@ const PerfilPaciente = () => {
 
   return (
     <>
-      <div>
-        <div>Nome: {patient.name}</div>
-        <div>Peso: {patient.height}</div>
-        <div>Altura: {patient.weight}</div>
-        <div>Telefone: {patient.phone}</div>
-        <div>RGHG: {patient.rghg}</div>
-        <div>Data de Nascimento: {patient.birthDate}</div>
-        <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
+      {patient === undefined
+        ?
+        <>
+        <Spinner animation="border" role="status" size="sm"/> Carregando...
+        </>
+        :
+        <>
+          <div>
+            <div>Nome: {patient.name}</div>
+            <div>Peso: {patient.height} kg</div>
+            <div>Altura: {patient.weight} cm</div>
+            <div>Telefone: {patient.phone}</div>
+            <div>RGHG: {patient.rghg}</div>
+            <div>Data de Nascimento: {dataFormatada}</div>
+            <div>ID Fitbit: {patient.fitbitId ? patient.fitbitId : <a href={`/auth/fitbit/${id}`}>Conectar ao Fitbit</a>}</div>
 
-      </div>
+          </div>
 
-      <br />
+          <br />
 
-      <ul className="nav nav-tabs">
-        <li className="nav-item">
-          <NavLink to={`${url}/resumo`} className="nav-link">Resumo</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to={`${url}/dados`} className="nav-link">Dados</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to={`${url}/metas`} className="nav-link">Metas</NavLink>
-        </li>
-      </ul>
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <NavLink to={`${url}/resumo`} className="nav-link">Resumo</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to={`${url}/dados`} className="nav-link">Dados</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to={`${url}/metas`} className="nav-link">Metas</NavLink>
+            </li>
+          </ul>
 
-      <Switch>
-        <Route path={`${url}/resumo`}>
-          <Resumo />
-        </Route>
-        <Route path={`${url}/dados`}>
-          <Dados linhas={linhas} />
-        </Route>
-        <Route path={`${url}/metas`}>
-          <Metas />
-        </Route>
-      </Switch>
+          <Switch>
+            <Route path={`${url}/resumo`}>
+              <Resumo />
+            </Route>
+            <Route path={`${url}/dados`}>
+              {patient.fitbitId ? <Dados linhas={linhas} /> : <div className="border-right border-bottom border-left p-3">Não há conexão com Fitbit</div>}
+            </Route>
+            <Route path={`${url}/metas`}>
+              <Metas />
+            </Route>
+          </Switch>
+        </>
+      }
     </>
   )
 }

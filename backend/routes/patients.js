@@ -64,7 +64,7 @@ patientsRouter.get('/:id', async (request, response, next) => {
   const id = Number(request.params.id)
 
   try {
-    const patient = await db.Patient.findByPk(id, { attributes: ['id', 'name', 'phone', 'accessToken'] })
+    const patient = await db.Patient.findByPk(id)
 
     if (patient === null) {
       response.status(404).send({ error: 'resource not found' })
@@ -73,16 +73,24 @@ patientsRouter.get('/:id', async (request, response, next) => {
         let token = JSON.parse(patient.accessToken)
 
         response.json({
-          id: patient.id,
           name: patient.name,
           phone: patient.phone,
+          height: patient.height,
+          weight: patient.weight,
+          rghg: patient.rghg,
+          cpf: patient.cpf,
+          birthDate: patient.birthDate,
           fitbitId: token.user_id
         })
       } else {
         response.json({
-          id: patient.id,
           name: patient.name,
           phone: patient.phone,
+          height: patient.height,
+          weight: patient.weight,
+          rghg: patient.rghg,
+          cpf: patient.cpf,
+          birthDate: patient.birthDate,
           fitbitId: null
         })
       }
@@ -92,20 +100,33 @@ patientsRouter.get('/:id', async (request, response, next) => {
   }
 })
 
-patientsRouter.post('/', (request, response, next) => {
-  const newPatient = {
-    name: request.body.name,
-    phone: request.body.phone
-  }
+patientsRouter.post('/', async (request, response, next) => {
+  try {
+    const newPatient = {
+      name: request.body.name,
+      phone: request.body.phone,
+      height: request.body.height,
+      weight: request.body.weight,
+      rghg: request.body.rghg,
+      cpf: request.body.cpf,
+      birthDate: request.body.birthDate,
+      passwordHash: await bcrypt.hash(request.body.password, 10)
+    }
 
-  db.Patient.create(newPatient)
-    .then(patient => {
-      response.json({
-        name: patient.name,
-        phone: patient.phone
-      })
+    const patient = await db.Patient.create(newPatient)
+
+    response.json({
+      name: patient.name,
+      phone: patient.phone,
+      height: patient.height,
+      weight: patient.weight,
+      rghg: patient.rghg,
+      cpf: patient.cpf,
+      birthDate: patient.birthDate,
     })
-    .catch(error => next(error))
+  } catch (error) {
+    next(error)
+  }
 })
 
 patientsRouter.delete('/:id', (request, response, next) => {

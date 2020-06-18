@@ -6,6 +6,7 @@ import ListaUsuarios from './ListaUsuarios'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
 import CadastroPaciente from './Pacientes/CadastroPaciente'
+import CadastroUsuario from './CadastroUsuario'
 
 const Dashboard = ({ user, setUser }) => {
   const logout = () => {
@@ -21,7 +22,7 @@ const Dashboard = ({ user, setUser }) => {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
-              Logado como {user.rghg} <Button variant="dark" onClick={logout}>Logout</Button>
+              Logado como {user.name} <Button variant="dark" onClick={logout}>Logout</Button>
             </Navbar.Text>
           </Navbar.Collapse>
         </Navbar>
@@ -45,6 +46,9 @@ const Dashboard = ({ user, setUser }) => {
               </Route>
               <Route path="/pacientes">
                 <ListaPacientes />
+              </Route>
+              <Route path="/usuarios/cadastro">
+                <CadastroUsuario />
               </Route>
               <Route path="/usuarios">
                 <ListaUsuarios />

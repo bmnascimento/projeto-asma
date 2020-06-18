@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import patientService from '../services/patients.js'
 
 const CadastroPaciente = () => {
-  const [ patients, setPatients ] = useState(undefined) 
   const [ newName, setNewName ] = useState('')
   const [ newPhone, setNewPhone ] = useState('')
   const [ newHeight, setNewHeight ] = useState('')
@@ -12,25 +12,16 @@ const CadastroPaciente = () => {
   const [ newData, setNewData ] = useState('')
   const [ newPassword, setNewPassword ] = useState('')
   
+  const history = useHistory()
+
   const handleSubmit = event => {
     event.preventDefault()
 
-    const foundPatient = patients.find(patient => patient.name === newName)
-    if (foundPatient === undefined) {
-      patientService.create({ name: newName, phone: newPhone, height: newHeight, weight: newWeight, rghg: newRghg, cpf: newCpf, birthDate: newData, password: newPassword })
-        .then(response => {
-          setPatients(patients.concat(response))
-          setNewPhone('')
-          setNewHeight('')
-          setNewWeight('')
-          setNewRghg('')
-          setNewCpf('')
-          setNewData('')
-        })
-        .catch(() => alert('nao foi possivel adicionar o paciente'))
-    } else {
-      alert('Pessoa já adicionada')
-    }
+    patientService.create({ name: newName, phone: newPhone, height: newHeight, weight: newWeight, rghg: newRghg, cpf: newCpf, birthDate: newData, password: newPassword })
+      .then(response => {
+        history.push('/pacientes')
+      })
+      .catch(() => alert('nao foi possivel adicionar o paciente'))
   }
 
   return(
