@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   return(sequelize.define('usuario', {
-    email: {
+    rghg: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true

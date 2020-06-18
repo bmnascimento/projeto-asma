@@ -20,7 +20,7 @@ const Dashboard = ({ user, setUser }) => {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Navbar.Text>
-              Logado como {user.email} <Button variant="dark" onClick={logout}>Logout</Button>
+              Logado como {user.rghg} <Button variant="dark" onClick={logout}>Logout</Button>
             </Navbar.Text>
           </Navbar.Collapse>
         </Navbar>

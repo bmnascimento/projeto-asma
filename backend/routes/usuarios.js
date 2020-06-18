@@ -6,7 +6,7 @@ usuariosRouter.get('/', async (request, response, next) => {
   try {
     const usuarios = await db.Usuarios.findAll()
 
-    response.send(usuarios.map(usuario => ({ id: usuario.id, email: usuario.email })))
+    response.send(usuarios.map(usuario => ({ id: usuario.id, rghg: usuario.rghg })))
 
   } catch (error) {
     next(error)

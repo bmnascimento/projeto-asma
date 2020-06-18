@@ -15,7 +15,7 @@ const ListaUsuarios = () => {
   const handleSubmit = event => {
     event.preventDefault()
 
-    const usuarioEncontrado = usuarios.find(usuario => usuario.name === newEmail)
+    const usuarioEncontrado = usuarios.find(usuario => usuario.rghg === newEmail)
     if (usuarioEncontrado === undefined) {
       usuarioService.create({ name: newEmail, phone: newPassword })
         .then(response => {
@@ -52,7 +52,7 @@ const ListaUsuarios = () => {
               key={usuario.id}
               className="list-group-item list-group-item-action"
             >
-                {usuario.email}
+                {usuario.rghg}
             </div>
           )}
           </div>
