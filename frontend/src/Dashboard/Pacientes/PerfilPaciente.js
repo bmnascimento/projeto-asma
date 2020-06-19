@@ -3,7 +3,7 @@ import {
   Switch, Route, NavLink,
   useParams, useRouteMatch
 } from 'react-router-dom'
-import patientService from '../services/patients.js'
+import patientService from '../../services/patients.js'
 import Spinner from 'react-bootstrap/Spinner'
 
 import Resumo from './Resumo'
@@ -30,7 +30,7 @@ const PerfilPaciente = () => {
 
         let date = new Date()
         for (let i = 0; i < quantidadeLinhas; i++) {
-          promises.push(patientService.getData(id, formatDate(date)))
+          promises.push(patientService.getData(id, date))
           date.setDate(date.getDate() - 1)
         }
 

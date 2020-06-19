@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import usuarioService from './services/usuarios.js'
+import usuarioService from '../services/usuarios.js'
 import Button from 'react-bootstrap/Button'
 
 const ListaUsuarios = () => {

@@ -30,7 +30,7 @@ loginRouter.post('/', async (request, response, next) => {
 
     response
       .status(200)
-      .send({ token, rghg: usuario.rghg, name: usuario.name, type: request.body.type })
+      .send({ token, rghg: usuario.rghg, name: usuario.name, type: request.body.type, id: usuario.id })
 
   } catch (error) {
     next(error)

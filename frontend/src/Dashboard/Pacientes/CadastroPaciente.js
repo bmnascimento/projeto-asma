@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import patientService from '../services/patients.js'
+import patientService from '../../services/patients.js'
 
 const CadastroPaciente = () => {
   const [ newName, setNewName ] = useState('')
