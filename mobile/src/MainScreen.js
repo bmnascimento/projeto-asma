@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container, Header, Title, Content, Left, Right, Body, Text, StyleProvider, H3, Icon, Button } from 'native-base';
-import { Notifications } from 'expo';
 import getTheme from '../native-base-theme/components';
 import material from '../native-base-theme/variables/material';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -12,36 +11,35 @@ import AuthContext from './AuthContext'
 import patientService from './services/patients'
 
 export default function MainScreen() {
-  //Notifications.presentLocalNotificationAsync({ title: 'teste' })
-  const name = 'Bernardo'
-  const minutosAtividade = 0
-
+  const [ dados, setDados ] = useState();
   const { user, setUser } = useContext(AuthContext);
 
   async function logout() {
     try {
       await AsyncStorage.removeItem('usuarioLogado');
+      setUser(null);
     } catch (e) {
       console.log('erro ao apagar do async storage');
     }
-
-    setUser(null);
   }
 
   useEffect(() => {
     async function fetchData() {
-      console.log('entrou')
-      console.log(user)
-      console.log(new Date())
       try {
-        const dados = await patientService.getData(user.id, new Date());
-        console.log(dados);
+        const response = await patientService.getData(user.id, new Date());
+        setDados(response);
+        console.log(response);
+        if (dados !== undefined)
+          minutosAtividade = dados.summary.fairlyActiveMinutes + dados.summary.veryActiveMinutes;
       } catch (error) {
         console.error(error);
       }
     }
     fetchData();
   }, [])
+
+  let minutosAtividade = 0;
+  let meta = 30;
 
   return (
     <StyleProvider style={getTheme(material)}>
@@ -63,7 +61,7 @@ export default function MainScreen() {
             <AnimatedCircularProgress
               size={120}
               width={15}
-              fill={40}
+              fill={minutosAtividade/meta}
               rotation={0}
               lineCap="round"
               tintColor="green"
@@ -78,8 +76,8 @@ export default function MainScreen() {
             </AnimatedCircularProgress>
           </View>
           <Text style={{ textAlign: 'center', marginBottom: 10 }}>Hoje você fez {minutosAtividade} minutos de atividade hoje.</Text>
-          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Sua meta é fazer {30} minutos de atividade por dia.</Text>
-          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você já atingiu {minutosAtividade / 30}% da sua meta hoje.</Text>
+          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Sua meta é fazer {meta} minutos de atividade por dia.</Text>
+          <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você atingiu {minutosAtividade/meta}% da sua meta hoje.</Text>
         </Content>
       </Container>
     </StyleProvider>

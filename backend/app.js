@@ -2,6 +2,7 @@ const config = require('./utils/config.js')
 const express = require('express')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
+const morgan = require('morgan')
 
 const patientsRouter = require('./routes/patients')
 const sintomasRouter = require('./routes/sintomas')
@@ -16,6 +17,7 @@ const app = express()
 logger.info('Connecting to', config.PGURI)
 db.sequelize.sync()
 
+app.use(morgan('dev'))
 app.use(express.static('build'))
 app.use(express.json())
 

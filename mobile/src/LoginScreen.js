@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { Container, Header, Title, Content, Button, Left, Right, Body, Text, Form, Item, Input, Label } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Alert } from 'react-native';
 
 import AuthContext from './AuthContext'
 
 import loginService from './services/login'
 
-function LoginScreen({ navigation }) {
+function LoginScreen() {
   const [rghg, setRGHG] = useState()
   const [senha, setSenha] = useState()
 
@@ -15,20 +16,16 @@ function LoginScreen({ navigation }) {
   const login = async () => {
     try {
       const user = await loginService.login({
-        rghg,
-        senha
+        rghg: rghg,
+        password: senha,
       });
 
-      try {
-        await AsyncStorage.setItem('usuarioLogado', JSON.stringify(user));
-      } catch (e) {
-        console.log('erro ao escrever no async storage');
-      }
+      await AsyncStorage.setItem('usuarioLogado', JSON.stringify(user));
 
       setUser(user);
     } catch (exception) {
-      console.error('Usuário ou senha errados');
-      console.error(exception)
+      Alert.alert('Erro', 'Usuário ou senha errados');
+      console.log(exception);
     }
   }
 
