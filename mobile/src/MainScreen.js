@@ -1,16 +1,47 @@
-import React from 'react';
-import { Container, Header, Title, Content, Left, Right, Body, Text, StyleProvider, H3 } from 'native-base';
+import React, { useContext, useEffect } from 'react';
+import { Container, Header, Title, Content, Left, Right, Body, Text, StyleProvider, H3, Icon, Button } from 'native-base';
 import { Notifications } from 'expo';
 import getTheme from '../native-base-theme/components';
 import material from '../native-base-theme/variables/material';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { View } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
+import AuthContext from './AuthContext'
+
+import patientService from './services/patients'
 
 export default function MainScreen() {
   //Notifications.presentLocalNotificationAsync({ title: 'teste' })
   const name = 'Bernardo'
   const minutosAtividade = 0
+
+  const { user, setUser } = useContext(AuthContext);
+
+  async function logout() {
+    try {
+      await AsyncStorage.removeItem('usuarioLogado');
+    } catch (e) {
+      console.log('erro ao apagar do async storage');
+    }
+
+    setUser(null);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log('entrou')
+      console.log(user)
+      console.log(new Date())
+      try {
+        const dados = await patientService.getData(user.id, new Date());
+        console.log(dados);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [])
 
   return (
     <StyleProvider style={getTheme(material)}>
@@ -20,7 +51,11 @@ export default function MainScreen() {
           <Body style={{ flex: 1 }}>
             <Title>Projeto Asma</Title>
           </Body>
-          <Right style={{ flex: 1 }} />
+          <Right style={{ flex: 1 }}>
+            <Button success transparent onPress={logout} >
+              <Icon name="ios-log-out" />
+            </Button>
+          </Right>
         </Header>
         <Content padder>
           <H3 style={{ textAlign: 'center' }}>HOJE</H3>

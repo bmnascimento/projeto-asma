@@ -29,4 +29,30 @@ loginRouter.post('/usuario', async (request, response, next) => {
   }
 })
 
+loginRouter.post('/paciente', async (request, response, next) => {
+  try {
+    const usuario = await db.Patient.findOne({ where: { rghg: request.body.rghg } })
+
+    const passwordCorrect = usuario === null
+      ? false
+      : await bcrypt.compare(request.body.password, usuario.passwordHash)
+
+    if (!(usuario && passwordCorrect)) {
+      return response.status(401).json({ error: 'invalid rghg or password' })
+    }
+
+    const token = jwt.sign({
+      rghg: usuario.rghg,
+      id: usuario.id,
+    }, process.env.SECRET)
+
+    response
+      .status(200)
+      .send({ token, rghg: usuario.rghg, name: usuario.name, id: usuario.id })
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = loginRouter
