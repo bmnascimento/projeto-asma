@@ -1,7 +1,11 @@
 const config = require('../utils/config')
 const Sequelize = require('sequelize')
 
-const sequelize = new Sequelize(config.PGURI)
+const sequelize = new Sequelize(config.PGURI, {
+  // disable logging; default: console.log
+  logging: false,
+  dialect: 'postgres'
+})
 
 const Patient = require('./patients.js')(sequelize, Sequelize)
 const Sintomas = require('./sintomas.js')(sequelize, Sequelize)

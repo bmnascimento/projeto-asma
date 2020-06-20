@@ -6,7 +6,6 @@ import {
 
 import Login from './Login'
 import Dashboard from './Dashboard/Dashboard'
-import Aplicativo from './Aplicativo/Aplicativo'
 
 const App = () => {
   const [user, setUser] = useState(JSON.parse(window.localStorage.getItem('usuarioLogado')))
@@ -18,7 +17,7 @@ const App = () => {
           <Login setUser={setUser} />
         </Route>
         <Route path="/">
-          {user ? user.type === 'profissional' ? <Dashboard user={user} setUser={setUser} /> : <Aplicativo user={user} setUser={setUser} /> : <Redirect to="/login" />}
+          {user ? <Dashboard user={user} setUser={setUser} /> : <Redirect to="/login" />}
         </Route>
       </Switch>
       <footer className="text-center bg-dark text-muted p-3 mt-auto">

@@ -7,12 +7,17 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Spinner from 'react-bootstrap/Spinner'
-import ArrowLeft from './icons/arrow-left.svg'
+import Alert from 'react-bootstrap/Alert'
 
 import loginService from './services/login'
 
 const Login = ({ setUser }) => {
-  const [type, setType] = useState('escolha')
+  const [alerta, setAlerta] = useState(null)
+
+  function alertar(mensagem) {
+    setAlerta(mensagem)
+    setTimeout(() => setAlerta(null), 3000)
+  }
 
   return (
     <>
@@ -22,25 +27,24 @@ const Login = ({ setUser }) => {
         </Navbar>
       </header>
       <main className="bg-light">
-      <Container>
-        <Row className="justify-content-center">
-          <Col className="col-md-5 col-lg-4 p-3 m-4 border">
-            {type === 'escolha'
-              ? <><Button variant="primary" className="w-100" onClick={() => {setType('paciente')}} > Paciente </Button>
-                  <Button variant="primary" className="w-100 mt-3" onClick={() => {setType('profissional')}}> Profissional de Saúde </Button></>
-              : <><button className="mb-1 btn btn-link p-0" onClick={() => setType('escolha')} ><img src={ArrowLeft} alt="Return"/></button>
-                  <h5 className="text-center" display="inline">{type === 'paciente' ? 'Paciente' : 'Profissional de Saúde'}</h5>
-                  <LoginForm setUser={setUser} type={type} /></>
-            }
-          </Col>
-        </Row>
-      </Container>
-    </main>
+        <Container>
+          {alerta &&
+            <Alert variant={'danger'} className={'mt-3'} >
+              {alerta}
+            </Alert>
+          }
+          <Row className="justify-content-center">
+            <Col className="col-md-5 col-lg-4 p-3 m-4 border">
+              <LoginForm setUser={setUser} alertar={alertar} />
+            </Col>
+          </Row>
+        </Container>
+      </main>
     </>
   )
 }
 
-const LoginForm = ({ setUser, type }) => {
+const LoginForm = ({ setUser, alertar }) => {
   const [rghg, setRGHG] = useState('')
   const [password, setPassword] = useState('')
   const [lembrarme, setLembrarme] = useState(false)
@@ -56,10 +60,9 @@ const LoginForm = ({ setUser, type }) => {
 
       const user = await loginService.login({
         rghg,
-        password,
-        type
+        password
       })
-      
+
       if (lembrarme)
         window.localStorage.setItem('usuarioLogado', JSON.stringify(user))
 
@@ -68,7 +71,8 @@ const LoginForm = ({ setUser, type }) => {
       history.push('/')
 
     } catch (exception) {
-      console.log('Wrong credentials')
+      setCarregando(false)
+      alertar('Usuário ou senha errados')
     }
   }
 
@@ -89,9 +93,9 @@ const LoginForm = ({ setUser, type }) => {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        { carregando ? <Spinner animation="border" role="status" size="sm"/> : 'Entrar' }
+        {carregando ? <Spinner animation="border" role="status" size="sm" /> : 'Entrar'}
       </Button>
-      
+
     </Form>
   )
 }
