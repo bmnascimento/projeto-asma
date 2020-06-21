@@ -5,7 +5,7 @@ const db = require('../models')
 const redirectUri = config.NODE_ENV === 'development' ? 'http://localhost:3001/auth/fitbit/callback' : 'https://young-hollows-35414.herokuapp.com/auth/fitbit/callback'
 
 fitbitAuth.get('/callback', async (request, response, next) => {
-  const id = request.query.state
+  const [id, origin] = request.query.state.split(' ')
 
   const tokenParams = {
     code: request.query.code,
@@ -23,7 +23,7 @@ fitbitAuth.get('/callback', async (request, response, next) => {
 
     await db.Patient.update(patient, { where: { id } })
     
-    if (request.query.origin === 'mobile') {
+    if (origin === 'mobile') {
       response.send('Fitbit cadastrado! Você pode retornar ao aplicativo')
     } else {
       response.redirect(`/#/pacientes/${id}/resumo`)
@@ -35,10 +35,12 @@ fitbitAuth.get('/callback', async (request, response, next) => {
 })
 
 fitbitAuth.get('/:id', async (request, response) => {
+  const origin = request.query.origin === 'mobile' ? 'mobile' : 'web'
+
   const authorizationUri = config.oauth2.authorizeURL({
     redirect_uri: redirectUri,
     scope: 'activity profile',
-    state: request.params.id
+    state: `${request.params.id} ${origin}`
   })
   
   response.redirect(authorizationUri)
