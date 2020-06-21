@@ -6,6 +6,9 @@ sintomasRouter.get('/:id', (request, response, next) => {
 
   db.Sintomas.findAll({ 
     where: {patientId: id},
+    order: [
+      ['dia', 'DESC'],
+    ]
   })
     .then(sintomas => {
       if (sintomas === []) {

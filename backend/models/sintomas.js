@@ -4,6 +4,9 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       allowNull: false,
     },
+    picoDeFluxo: {
+      type: Sequelize.INTEGER,
+    },
     tosse: {
       type: Sequelize.BOOLEAN,
       allowNull: false,

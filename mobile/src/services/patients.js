@@ -1,6 +1,6 @@
 import axios from 'axios'
-//const baseUrl = 'https://young-hollows-35414.herokuapp.com/api/patients'
-const baseUrl = 'http://192.168.0.13:3001/api/patients'
+const baseUrl = 'https://young-hollows-35414.herokuapp.com/api/patients'
+//const baseUrl = 'http://192.168.0.13:3001/api/patients'
 
 
 const getData = async (id, date) => {
