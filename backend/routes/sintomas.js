@@ -32,6 +32,8 @@ sintomasRouter.post('/:id', (request, response, next) => {
     faltaDeAr: request.body.faltaDeAr,
     acordar: request.body.acordar,
     bombinha: request.body.bombinha,
+    picoDeFluxo: request.body.picoDeFluxo,
+    detalhes: request.body.detalhes,
     patientId: id,
   }
 

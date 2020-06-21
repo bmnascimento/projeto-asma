@@ -26,7 +26,10 @@ module.exports = (sequelize, Sequelize) => {
     bombinha: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-    }
+    },
+    detalhes: {
+      type: Sequelize.TEXT,
+    },
   }, {
     // options
   }))
