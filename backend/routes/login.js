@@ -48,7 +48,7 @@ loginRouter.post('/paciente', async (request, response, next) => {
 
     response
       .status(200)
-      .send({ token, rghg: usuario.rghg, name: usuario.name, id: usuario.id, fitbitId: usuario.accessToken ? JSON.parse(usuario.accessToken).user_id : null })
+      .send({ token, rghg: usuario.rghg, name: usuario.name, id: usuario.id, fitbitId: JSON.parse(usuario.accessToken) ? JSON.parse(usuario.accessToken).user_id : null })
 
   } catch (error) {
     next(error)
