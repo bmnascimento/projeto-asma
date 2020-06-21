@@ -23,7 +23,11 @@ fitbitAuth.get('/callback', async (request, response, next) => {
 
     await db.Patient.update(patient, { where: { id } })
     
-    response.redirect(`/#/pacientes/${id}/resumo`)
+    if (request.query.origin === 'mobile') {
+      response.send('Fitbit cadastrado! Você pode retornar ao aplicativo')
+    } else {
+      response.redirect(`/#/pacientes/${id}/resumo`)
+    }
 
   } catch (error) {
     next(error)
