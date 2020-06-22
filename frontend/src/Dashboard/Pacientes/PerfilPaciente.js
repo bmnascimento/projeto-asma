@@ -22,7 +22,7 @@ const PerfilPaciente = () => {
       const patient = await patientService.getOne(id)
       setPatient(patient)
       const dataFormatada = new Date(patient.birthDate)
-      setDataFormatada(dataFormatada.toLocaleDateString("pt-BR"))
+      setDataFormatada(formatDate(dataFormatada))
 
       if (patient.fitbitId) {
         let promises = []
@@ -89,6 +89,9 @@ const PerfilPaciente = () => {
             <li className="nav-item">
               <NavLink to={`${url}/metas`} className="nav-link">Metas</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to={`${url}/sintomas`} className="nav-link">Sintomas</NavLink>
+            </li>
           </ul>
 
           <Switch>
@@ -100,6 +103,9 @@ const PerfilPaciente = () => {
             </Route>
             <Route path={`${url}/metas`}>
               <Metas />
+            </Route>
+            <Route path={`${url}/sintomas`}>
+              <Sintomas id={id}/>
             </Route>
           </Switch>
         </>

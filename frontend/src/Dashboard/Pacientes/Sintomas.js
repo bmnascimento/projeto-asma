@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
-import sintomasService from '../services/sintomas.js'
-import PerfilPaciente from './PerfilPaciente'
+import sintomasService from '../../services/sintomas.js'
+import PerfilPaciente from '../../Pacientes/PerfilPaciente'
 
 const Dados = ({ id }) => {
   const [linhas, setLinhas] = useState([])
