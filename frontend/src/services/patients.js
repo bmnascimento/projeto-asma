@@ -21,10 +21,15 @@ const deleteOne = id => {
   return axios.delete(`${baseUrl}/${id}`).then(response => response.data)
 }
 
+const getData = (id, date) => {
+  return axios.get(`${baseUrl}/data/${id}/${date}`).then(response => response.data)
+}
+
 export default {
   getAll,
   getOne,
   create,
   update,
-  deleteOne
+  deleteOne,
+  getData
 }
