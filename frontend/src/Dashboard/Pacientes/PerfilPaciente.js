@@ -9,6 +9,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import Resumo from './Resumo'
 import Dados from './Dados'
 import Metas from './Metas'
+import Sintomas from './Sintomas'
 
 const PerfilPaciente = () => {
   const [patient, setPatient] = useState(undefined)

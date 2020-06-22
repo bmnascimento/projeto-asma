@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Table from 'react-bootstrap/Table'
-import sintomasService from '../../services/sintomas.js'
-import PerfilPaciente from '../../Pacientes/PerfilPaciente'
+import sintomasService from './../../services/sintomas'
 
 const Dados = ({ id }) => {
   const [linhas, setLinhas] = useState([])
@@ -24,19 +23,19 @@ const Dados = ({ id }) => {
 
         for (let i = 0; i < quantidadeLinhas; i++) {
           const response = responses[i]
-          console.log (responses[i].length !== 0)
-          if (responses[i].length !== 0) {
+
+          if (response.length !== 0) {
             setLinhas(linhas => linhas.concat({
               data: formatDate(date),
-              tosse: responses[i][0].tosse,
-              faltaDeAr: responses[i][0].faltaDeAr,
-              bombinha: responses[i][0].bombinha,
-              acordar: responses[i][0].acordar
+              tosse: response[0].tosse,
+              faltaDeAr: response[0].faltaDeAr,
+              bombinha: response[0].bombinha,
+              acordar: response[0].acordar
             }))
-            console.log(responses[i][0].tosse)
-            console.log(responses[i][0].faltaDeAr)
-            console.log(responses[i][0].bombinha)
-            console.log(responses[i][0].acordar)
+            console.log(response[0].tosse)
+            console.log(response[0].faltaDeAr)
+            console.log(response[0].bombinha)
+            console.log(response[0].acordar)
           }
 
           date.setDate(date.getDate() - 1)
