@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import * as React from 'react';
 import { Container, Header, Title, Content, Button, Left, Right, Body, Text, Form, Item, Input, Label } from 'native-base';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Alert } from 'react-native';
@@ -8,10 +8,10 @@ import AuthContext from './AuthContext'
 import loginService from './services/login'
 
 function LoginScreen() {
-  const [rghg, setRGHG] = useState()
-  const [senha, setSenha] = useState()
+  const [rghg, setRGHG] = React.useState();
+  const [senha, setSenha] = React.useState();
 
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = React.useContext(AuthContext);
 
   const login = async () => {
     try {
