@@ -18,5 +18,6 @@ module.exports = {
   sequelize,
   Patient,
   Sintomas,
-  Usuarios
+  Usuarios,
+  Op: Sequelize.Op
 }
