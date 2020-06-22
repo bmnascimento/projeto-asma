@@ -19,7 +19,7 @@ const ListaPacientes = () => {
             <div className="list-group my-3">
             {patients.map(patient => 
               <Link
-                to={`pacientes/${patient.id}/resumo`}
+                to={`pacientes/${patient.id}/dados`}
                 key={patient.id}
                 className="list-group-item list-group-item-action text-primary"
               >

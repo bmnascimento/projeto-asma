@@ -1,92 +1,42 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Table from 'react-bootstrap/Table'
-import sintomasService from './../../services/sintomas'
+import { IoIosCheckmark } from 'react-icons/io'
 
-const Dados = ({ id }) => {
-  const [linhas, setLinhas] = useState([])
-
-  useEffect(() => {
-    let promises = []
-    const quantidadeLinhas = 5
-
-    const date = new Date()
-    for (let i = 0; i < quantidadeLinhas; i++) {
-      promises.push(sintomasService.getAll(id, formatDate(date)))
-
-      date.setDate(date.getDate() - 1)
-    }
-
-    Promise.all(promises)
-      .then(responses => {
-        const date = new Date()
-        console.log(responses)
-
-        for (let i = 0; i < quantidadeLinhas; i++) {
-          const response = responses[i]
-
-          if (response.length !== 0) {
-            setLinhas(linhas => linhas.concat({
-              data: formatDate(date),
-              tosse: response[0].tosse,
-              faltaDeAr: response[0].faltaDeAr,
-              bombinha: response[0].bombinha,
-              acordar: response[0].acordar
-            }))
-            console.log(response[0].tosse)
-            console.log(response[0].faltaDeAr)
-            console.log(response[0].bombinha)
-            console.log(response[0].acordar)
-          }
-
-          date.setDate(date.getDate() - 1)
-
-        }
-
-
-      })
-
-  }, [id])
-
+const Sintomas = ({ lista }) => {
   return (
     <div className="border-right border-bottom border-left p-3">
       <h4>Dados</h4>
-      <Table striped bordered hover>
+      <Table striped bordered hover style={{ textAlign: 'center' }}>
         <thead>
           <tr>
-          <th>Data</th>
+            <th>Data</th>
+            <th>Pico de fluxo</th>
             <th>Teve tosse?</th>
+            <th>Teve chiado?</th>
             <th>Teve falta de ar?</th>
-            <th>Usou a bombinha?</th>
             <th>Acordou de madrugada?</th>
+            <th>Usou a bombinha?</th>
+            <th>Observações</th>
           </tr>
         </thead>
         <tbody>
-          {linhas.map(linha =>
-            <tr key={linha.data}>
-              <td>{linha.data}</td>
-              <td>{linha.tosse && "Teve"}</td>
-              <td>{linha.faltaDeAr && "Teve"}</td>
-              <td>{linha.bombinha && "Teve"}</td>
-              <td>{linha.acordar && "Teve"}</td>
-            </tr>
-          )}
+          {lista.map(linha => {
+            const data = new Date(linha.dia)
+            return (<tr key={linha.dia}>
+              <td>{`${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`}</td>
+              <td>{linha.picoDeFluxo}</td>
+              <td>{linha.tosse && <IoIosCheckmark />}</td>
+              <td>{linha.chiado && <IoIosCheckmark />}</td>
+              <td>{linha.faltaDeAr && <IoIosCheckmark />}</td>
+              <td>{linha.acordar && <IoIosCheckmark />}</td>
+              <td>{linha.bombinha && <IoIosCheckmark />}</td>
+              <td>{linha.detalhes}</td>
+            </tr>)
+          })}
         </tbody>
       </Table>
     </div>
   )
 }
 
-const formatDate = date => {
-  let month = '' + (date.getMonth() + 1)
-  let day = '' + date.getDate()
-  let year = date.getFullYear()
-
-  if (month.length < 2)
-    month = '0' + month
-  if (day.length < 2)
-    day = '0' + day
-
-  return [year, month, day].join('-')
-}
-
-export default Dados
+export default Sintomas

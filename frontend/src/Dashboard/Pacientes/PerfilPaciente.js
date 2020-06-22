@@ -3,10 +3,11 @@ import {
   Switch, Route, NavLink,
   useParams, useRouteMatch
 } from 'react-router-dom'
-import patientService from '../../services/patients.js'
 import Spinner from 'react-bootstrap/Spinner'
 
-import Resumo from './Resumo'
+import patientService from './../../services/patients'
+import sintomasService from './../../services/sintomas'
+
 import Dados from './Dados'
 import Metas from './Metas'
 import Sintomas from './Sintomas'
@@ -14,53 +15,78 @@ import Sintomas from './Sintomas'
 const PerfilPaciente = () => {
   const [patient, setPatient] = useState(undefined)
   const [linhas, setLinhas] = useState([])
+  const [linhasSintomas, setLinhasSintomas] = useState([])
   const [dataFormatada, setDataFormatada] = useState()
+  const [dadosDone, setDadosDone] = useState(false)
+  const [sintomasDone, setSintomasDone] = useState(false)
 
   const id = useParams().id
 
   useEffect(() => {
-    const fetchData = async () => {
-      const patient = await patientService.getOne(id)
-      setPatient(patient)
-      const dataFormatada = new Date(patient.birthDate)
-      setDataFormatada(formatDate(dataFormatada))
-
-      if (patient.fitbitId) {
-        let promises = []
-        const quantidadeLinhas = 5
-
-        let date = new Date()
-        for (let i = 0; i < quantidadeLinhas; i++) {
-          promises.push(patientService.getData(id, date))
-          date.setDate(date.getDate() - 1)
+    const fetchFitBitData = async () => {
+      try {
+        const patient = await patientService.getOne(id)
+        setPatient(patient)
+        const dataFormatada = new Date(patient.birthDate)
+        setDataFormatada(`${dataFormatada.getDate()}/${dataFormatada.getMonth()+1}/${dataFormatada.getFullYear()}`)
+    
+        // Request dos dados do Fitbit
+        if (patient.fitbitId) {
+          let promises = []
+          const quantidadeLinhas = 5
+    
+          let date = new Date()
+          for (let i = 0; i < quantidadeLinhas; i++) {
+            promises.push(patientService.getData(id, date))
+            date.setDate(date.getDate() - 1)
+          }
+    
+          const responses = await Promise.all(promises)
+    
+          date = new Date()
+    
+          for (let i = 0; i < quantidadeLinhas; i++) {
+            const response = responses[i]
+    
+            setLinhas(linhas => linhas.concat({
+              data: `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`,
+              numPassos: response.summary.steps,
+              minutosLeves: response.summary.lightlyActiveMinutes,
+              minutosModerados: response.summary.fairlyActiveMinutes,
+              minutosIntensos: response.summary.veryActiveMinutes,
+              minutosSedentarios: response.summary.sedentaryMinutes
+            }))
+            date.setDate(date.getDate() - 1)
+          }
         }
 
-        const responses = await Promise.all(promises)
+        setDadosDone(true)
+      } catch (error) {
+        console.error(error)
+      }      
+    }
 
-        date = new Date()
-
-        for (let i = 0; i < quantidadeLinhas; i++) {
-          const response = responses[i]
-
-          setLinhas(linhas => linhas.concat({
-            data: formatDate(date),
-            numPassos: response.summary.steps,
-            minutosAtivos: response.summary.fairlyActiveMinutes + response.summary.veryActiveMinutes,
-            minutosSedentarios: response.summary.sedentaryMinutes
-          }))
-          date.setDate(date.getDate() - 1)
-        }
+    const fetchSintomas = async () => {
+      try {
+        // Request dos sintomas
+        const listaSintomas = await sintomasService.getAll(id)
+        setLinhasSintomas(listaSintomas)
+        console.log(listaSintomas)
+        setSintomasDone(true)
+      } catch(error) {
+        console.error(error)
       }
     }
 
-    fetchData()
+    fetchFitBitData()
+    fetchSintomas()
   }, [id])
 
   const { url } = useRouteMatch()
 
   return (
     <>
-      {patient === undefined
+      {!(dadosDone && sintomasDone) || patient === undefined
         ?
         <>
         <Spinner animation="border" role="status" size="sm"/> Carregando...
@@ -82,9 +108,6 @@ const PerfilPaciente = () => {
 
           <ul className="nav nav-tabs">
             <li className="nav-item">
-              <NavLink to={`${url}/resumo`} className="nav-link">Resumo</NavLink>
-            </li>
-            <li className="nav-item">
               <NavLink to={`${url}/dados`} className="nav-link">Dados</NavLink>
             </li>
             <li className="nav-item">
@@ -96,9 +119,6 @@ const PerfilPaciente = () => {
           </ul>
 
           <Switch>
-            <Route path={`${url}/resumo`}>
-              <Resumo />
-            </Route>
             <Route path={`${url}/dados`}>
               {patient.fitbitId ? <Dados linhas={linhas} /> : <div className="border-right border-bottom border-left p-3">Não há conexão com Fitbit</div>}
             </Route>
@@ -106,26 +126,13 @@ const PerfilPaciente = () => {
               <Metas />
             </Route>
             <Route path={`${url}/sintomas`}>
-              <Sintomas id={id}/>
+              <Sintomas lista={linhasSintomas}/>
             </Route>
           </Switch>
         </>
       }
     </>
   )
-}
-
-const formatDate = date => {
-  let month = '' + (date.getMonth() + 1)
-  let day = '' + date.getDate()
-  let year = date.getFullYear()
-
-  if (month.length < 2)
-    month = '0' + month
-  if (day.length < 2)
-    day = '0' + day
-
-  return [year, month, day].join('-')
 }
 
 export default PerfilPaciente

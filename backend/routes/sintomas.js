@@ -9,15 +9,15 @@ sintomasRouter.get('/:id', (request, response, next) => {
     order: [
       ['dia', 'DESC'],
     ]
-      .then(sintomas => {
-        if (sintomas === []) {
-          response.status(404).send({ error: 'resource not found' })
-        } else {
-          response.json(sintomas)
-        }
-      })
-      .catch(error => next(error))
   })
+    .then(sintomas => {
+      if (sintomas === []) {
+        response.status(404).send({ error: 'resource not found' })
+      } else {
+        response.json(sintomas)
+      }
+    })
+    .catch(error => next(error))
 })
 
 sintomasRouter.get('/:id/:data', (request, response, next) => {
@@ -69,7 +69,6 @@ sintomasRouter.post('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-/*
 sintomasRouter.delete('/:id', (request, response, next) => {
   const id = Number(request.params.id)
   
@@ -79,6 +78,8 @@ sintomasRouter.delete('/:id', (request, response, next) => {
     })
     .catch(error => next(error))
 })
+
+/*
  
 sintomasRouter.put('/:id', (request, response, next) => {
   const id = Number(request.params.id)
