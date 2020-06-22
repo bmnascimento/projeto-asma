@@ -5,21 +5,21 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Rig
 export default function InfoScreen() {
   const videos = [
     {
-      texto: 'Como fazer alongamento',
-      image: require('./images/1.png'),
-      link: 'https://youtu.be/ATXlJ5RPOxI?t=67',
+      titulo: 'Como a asma funciona (legendado)',
+      id: 'PzfLDi-sL3w',
     },
     {
-      texto: 'Como fazer exercícios respiratórios',
-      image: require('./images/2.jpg'),
-      link: 'https://www.youtube.com/watch?v=DKWd_CipOQg',
+      titulo: 'Como fazer exercícios respiratórios',
+      id: 'DKWd_CipOQg',
     },
     {
-      texto: 'Entenda como o exercício físico pode ser um aliado no tratamento da asma',
-      image: require('./images/3.png'),
-      link: 'https://www.youtube.com/watch?v=gGX5DMjBRzk',
+      titulo: 'Entenda como o exercício físico pode ser um aliado no tratamento da asma',
+      id: 'gGX5DMjBRzk',
     },
-
+    {
+      titulo: 'Como se aquecer pra correr',
+      id: '4FtJ--4p4sg',
+    },
   ]
   return (
     <Container>
@@ -28,11 +28,11 @@ export default function InfoScreen() {
           <Card key={key}>
             <CardItem>
               <Text>
-                {video.texto}
+                {video.titulo}
               </Text>
             </CardItem>
-            <CardItem cardBody button onPress={() => Linking.openURL(video.link)}>
-              <Image source={video.image} style={{ height: 200, width: null, flex: 1 }} />
+            <CardItem cardBody button onPress={() => Linking.openURL(`https://www.youtube.com/watch?v=${video.id}`)}>
+              <Image source={{ uri: `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg` }} style={{ height: 200, width: null, flex: 1 }} />
             </CardItem>
           </Card>
         )}

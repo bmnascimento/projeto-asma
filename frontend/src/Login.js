@@ -79,7 +79,7 @@ const LoginForm = ({ setUser, alertar }) => {
   return (
     <Form onSubmit={handleSubmit} >
       <Form.Group controlId="RGHG">
-        <Form.Label>RGHG</Form.Label>
+        <Form.Label>RGHC</Form.Label>
         <Form.Control type="text" placeholder="RGHG" value={rghg} onChange={({ target }) => setRGHG(target.value)} />
       </Form.Group>
 

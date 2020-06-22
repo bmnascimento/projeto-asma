@@ -41,14 +41,14 @@ function LoginScreen() {
       <Content padder>
         <Form>
           <Item floatingLabel>
-            <Label>RGHG</Label>
+            <Label>RGHC</Label>
             <Input value={rghg} onChangeText={setRGHG} />
           </Item>
           <Item floatingLabel last>
             <Label>Senha</Label>
             <Input secureTextEntry={true} value={senha} onChangeText={setSenha} />
           </Item>
-          <Button block success style={{ marginTop: 20 }} onPress={login}>
+          <Button block style={{ marginTop: 20, backgroundColor: "green" }} onPress={login}>
             <Text>Enviar</Text>
           </Button>
         </Form>

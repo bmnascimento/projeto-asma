@@ -90,7 +90,6 @@ export default function App() {
                   iconName = 'ios-football'
                 }
 
-                // You can return any component that you like here!
                 return <Ionicons name={iconName} size={size} color={color} />;
               },
             })}
@@ -101,7 +100,7 @@ export default function App() {
           >
             {user === null ?
               <>
-                <Tab.Screen name="Login" component={LoginScreen} options={{ title: 'Login' }} />
+                <Tab.Screen name="Login" component={LoginScreen} options={{ title: 'Login', tabBarVisible: false }} />
               </>
               :
               <>
