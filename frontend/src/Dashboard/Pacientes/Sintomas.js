@@ -6,7 +6,7 @@ const Sintomas = ({ lista }) => {
   return (
     <div className="border-right border-bottom border-left p-3">
       <h4>Dados</h4>
-      <Table striped bordered hover style={{ textAlign: 'center' }}>
+      <Table responsive striped bordered hover style={{ textAlign: 'center' }}>
         <thead>
           <tr>
             <th>Data</th>

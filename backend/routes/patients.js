@@ -80,7 +80,8 @@ patientsRouter.get('/:id', async (request, response, next) => {
           rghg: patient.rghg,
           cpf: patient.cpf,
           birthDate: patient.birthDate,
-          fitbitId: token.user_id
+          fitbitId: token.user_id,
+          metas: JSON.parse(patient.metas)
         })
       } else {
         response.json({
@@ -91,7 +92,8 @@ patientsRouter.get('/:id', async (request, response, next) => {
           rghg: patient.rghg,
           cpf: patient.cpf,
           birthDate: patient.birthDate,
-          fitbitId: null
+          fitbitId: null,
+          metas: JSON.parse(patient.metas)
         })
       }
     }
@@ -110,7 +112,7 @@ patientsRouter.post('/', async (request, response, next) => {
       rghg: request.body.rghg,
       cpf: request.body.cpf,
       birthDate: request.body.birthDate,
-      passwordHash: await bcrypt.hash(request.body.password, 10)
+      passwordHash: request.body.password ? await bcrypt.hash(request.body.password, 10) : null
     }
 
     const patient = await db.Patient.create(newPatient)
@@ -151,19 +153,21 @@ patientsRouter.put('/:id', async (request, response, next) => {
       rghg: request.body.rghg,
       cpf: request.body.cpf,
       birthDate: request.body.birthDate,
-      passwordHash: await bcrypt.hash(request.body.password, 10)
+      passwordHash: request.body.password ? await bcrypt.hash(request.body.password, 10) : undefined,
+      metas: JSON.stringify(request.body.metas),
     }
 
     await db.Patient.update(patient, { where: { id } })
 
     response.json({
-      name: request.body.name,
-      phone: request.body.phone,
-      height: request.body.height,
-      weight: request.body.weight,
-      rghg: request.body.rghg,
-      cpf: request.body.cpf,
-      birthDate: request.body.birthDate,
+      name: patient.name,
+      phone: patient.phone,
+      height: patient.height,
+      weight: patient.weight,
+      rghg: patient.rghg,
+      cpf: patient.cpf,
+      birthDate: patient.birthDate,
+      metas: JSON.parse(patient.metas),
     })
   } catch (error) {
     next(error)

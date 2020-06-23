@@ -71,7 +71,6 @@ const PerfilPaciente = () => {
         // Request dos sintomas
         const listaSintomas = await sintomasService.getAll(id)
         setLinhasSintomas(listaSintomas)
-        console.log(listaSintomas)
         setSintomasDone(true)
       } catch(error) {
         console.error(error)
@@ -89,7 +88,7 @@ const PerfilPaciente = () => {
       {!(dadosDone && sintomasDone) || patient === undefined
         ?
         <>
-        <Spinner animation="border" role="status" size="sm"/> Carregando...
+          <Spinner animation="border" role="status" size="sm"/> Carregando...
         </>
         :
         <>
@@ -123,7 +122,7 @@ const PerfilPaciente = () => {
               {patient.fitbitId ? <Dados linhas={linhas} /> : <div className="border-right border-bottom border-left p-3">Não há conexão com Fitbit</div>}
             </Route>
             <Route path={`${url}/metas`}>
-              <Metas />
+              <Metas id={id} linhas={linhas} metas={patient.metas} />
             </Route>
             <Route path={`${url}/sintomas`}>
               <Sintomas lista={linhasSintomas}/>

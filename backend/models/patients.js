@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     accessToken: {
       type: Sequelize.TEXT
+    },
+    metas: {
+      type: Sequelize.TEXT
     }
   }, {
     // options
