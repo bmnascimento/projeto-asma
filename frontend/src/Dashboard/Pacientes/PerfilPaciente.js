@@ -7,15 +7,18 @@ import Spinner from 'react-bootstrap/Spinner'
 
 import patientService from './../../services/patients'
 import sintomasService from './../../services/sintomas'
+import sintomasSemanalService from './../../services/sintomasSemanal'
 
 import Dados from './Dados'
 import Metas from './Metas'
 import Sintomas from './Sintomas'
+import ControleClinico from './ControleClinico'
 
 const PerfilPaciente = () => {
   const [patient, setPatient] = useState(undefined)
   const [linhas, setLinhas] = useState([])
   const [linhasSintomas, setLinhasSintomas] = useState([])
+  const [linhasSintomasSemanal, setLinhasSintomasSemanal] = useState([])
   const [dataFormatada, setDataFormatada] = useState()
   const [dadosDone, setDadosDone] = useState(false)
   const [sintomasDone, setSintomasDone] = useState(false)
@@ -27,8 +30,9 @@ const PerfilPaciente = () => {
       try {
         const patient = await patientService.getOne(id)
         setPatient(patient)
-        const dataFormatada = new Date(patient.birthDate)
-        setDataFormatada(`${dataFormatada.getDate()}/${dataFormatada.getMonth()+1}/${dataFormatada.getFullYear()}`)
+
+        const objetoData = new Date(patient.birthDate)
+        setDataFormatada(`${objetoData.getDate()}/${objetoData.getMonth()+1}/${objetoData.getFullYear()}`)
     
         // Request dos dados do Fitbit
         if (patient.fitbitId) {
@@ -77,8 +81,19 @@ const PerfilPaciente = () => {
       }
     }
 
+    const fetchSintomasSemanal = async () => {
+      try {
+        // Request dos sintomas
+        const listaSintomas = await sintomasSemanalService.getAll(id)
+        setLinhasSintomasSemanal(listaSintomas)
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
     fetchFitBitData()
     fetchSintomas()
+    fetchSintomasSemanal()
   }, [id])
 
   const { url } = useRouteMatch()
@@ -94,8 +109,8 @@ const PerfilPaciente = () => {
         <>
           <div>
             <div>Nome: {patient.name}</div>
-            <div>Peso: {patient.height} kg</div>
-            <div>Altura: {patient.weight} cm</div>
+            <div>Peso: {patient.weight} kg</div>
+            <div>Altura: {patient.height} cm</div>
             <div>Telefone: {patient.phone}</div>
             <div>RGHC: {patient.rghg}</div>
             <div>Data de Nascimento: {dataFormatada}</div>
@@ -115,6 +130,9 @@ const PerfilPaciente = () => {
             <li className="nav-item">
               <NavLink to={`${url}/sintomas`} className="nav-link">Sintomas</NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to={`${url}/controle`} className="nav-link">Controle clínico</NavLink>
+            </li>
           </ul>
 
           <Switch>
@@ -125,7 +143,10 @@ const PerfilPaciente = () => {
               <Metas id={id} linhas={linhas} metas={patient.metas} />
             </Route>
             <Route path={`${url}/sintomas`}>
-              <Sintomas lista={linhasSintomas}/>
+              <Sintomas id={id} lista={linhasSintomas}/>
+            </Route>
+            <Route path={`${url}/controle`}>
+              <ControleClinico id={id} lista={linhasSintomasSemanal} />
             </Route>
           </Switch>
         </>

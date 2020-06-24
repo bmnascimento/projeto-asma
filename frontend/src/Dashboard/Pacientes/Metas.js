@@ -25,7 +25,7 @@ const Metas = ({ id, linhas, metas }) => {
 
   return (
     <div className="border-right border-bottom border-left p-3">
-      <h2>Metas</h2>
+      <h4>Metas</h4>
       <h5>A meta atual é de {metasAtuais.passos && `${metasAtuais.passos} passos`}{(metasAtuais.passos && metasAtuais.tempo) && ' e '}{metasAtuais.tempo && `${metasAtuais.tempo} minutos de atividade`} por dia.</h5>
       <Accordion>
         <Card>

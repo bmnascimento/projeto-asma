@@ -1,7 +1,7 @@
 import axios from 'axios'
-const baseUrl = '/api/sintomas'
+const baseUrl = '/api/sintomasSemanal'
 
-const getAll = (id) => {
+const getAll = id => {
   return axios.get(`${baseUrl}/${id}`).then(response => response.data)
 }
 

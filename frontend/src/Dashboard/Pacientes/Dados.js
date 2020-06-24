@@ -10,7 +10,6 @@ const Dados = ({ linhas }) => {
     }
   }
 
-  console.log(linhas)
   return (
     <div className="border-right border-bottom border-left p-3">
       <h4>Dados</h4>

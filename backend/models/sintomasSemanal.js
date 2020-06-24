@@ -17,7 +17,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     freqBombinha: {
       type: Sequelize.INTEGER
-    }
+    },
+    porcentagemPrevisto: {
+      type: Sequelize.INTEGER
+    },
   }, {
     // options
   }))

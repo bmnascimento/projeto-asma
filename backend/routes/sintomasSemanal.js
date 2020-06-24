@@ -6,6 +6,9 @@ sintomasSemanalRouter.get('/:id', (request, response, next) => {
 
   db.SintomasSemanal.findAll({
     where: {patientId: id},
+    order: [
+      ['createdAt', 'DESC'],
+    ],
   })
     .then(sintomasSemanal => {
       if (sintomasSemanal === []) {
@@ -19,21 +22,20 @@ sintomasSemanalRouter.get('/:id', (request, response, next) => {
 
 
 sintomasSemanalRouter.post('/:id', (request, response, next) => {
-
   const id = Number(request.params.id)
 
   const newSintomasSemanal = {
-
     freqAcordou: request.body.freqAcordou,
     intensidadeSintomas: request.body.intensidadeSintomas,
     chiadolimitacao: request.body.chiadolimitacao,
     freqFaltaDeAr: request.body.freqFaltaDeAr,
     freqChiado: request.body.freqChiado,
     freqBombinha: request.body.freqBombinha,
+    porcentagemPrevisto: request.body.porcentagemPrevisto,
     patientId: id,
   }
 
-  db.SintomasSemanals.create(newSintomasSemanal)
+  db.SintomasSemanal.create(newSintomasSemanal)
     .then(sintomasSemanal => {
       response.json(sintomasSemanal)
     })
