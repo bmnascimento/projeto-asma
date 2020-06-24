@@ -63,7 +63,7 @@ function UltimaResposta({ resposta }) {
       </li>
       <br />
       <li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        Em média, durante os últimos sete dias, o quão ruins foram os seus sintomas da asma, quando você acordou pela manhã
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.chiadolimitacao.map((alternativa, key) =>
             <li key={key}>
@@ -78,7 +78,7 @@ function UltimaResposta({ resposta }) {
         </ol>
       </li>
       <br /><li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        De um modo geral, durante os últimos sete dias, o quão limitado você tem estado em suas atividades por causa de sua asma?
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.chiadolimitacao.map((alternativa, key) =>
             <li key={key}>
@@ -93,7 +93,7 @@ function UltimaResposta({ resposta }) {
         </ol>
       </li>
       <br /><li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        De um modo geral, durante os últimos sete dias, o quanto de falta de ar você teve por causa de sua asma?
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.freqFaltaDeAr.map((alternativa, key) =>
             <li key={key}>
@@ -108,7 +108,7 @@ function UltimaResposta({ resposta }) {
         </ol>
       </li>
       <br /><li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        De um modo geral, durante os últimos sete dias, quanto tempo você teve chiado?
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.freqChiado.map((alternativa, key) =>
             <li key={key}>
@@ -123,7 +123,7 @@ function UltimaResposta({ resposta }) {
         </ol>
       </li>
       <br /><li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        Em média, durante os últimos sete dias, quantos jatos de broncodilatador de resgate (Sabutamol, Fenoterol, etc) você usou por dia?
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.freqBombinha.map((alternativa, key) =>
             <li key={key}>
@@ -138,7 +138,7 @@ function UltimaResposta({ resposta }) {
         </ol>
       </li>
       <br /><li>
-        Em média, durante os últimos sete dias, o quão frequentemente você se acordou por causa de sua asma, durante a noite?
+        VEF1 pré broncodilatador ______    VEF1 previsto ______    VEF1 % previsto
           <ol start="0" style={{ columns: 2 }}>
           {alternativas.porcentagemPrevisto.map((alternativa, key) =>
             <li key={key}>

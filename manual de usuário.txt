@@ -1,0 +1,3 @@
+Para acessar a interface web, basta acessar pelo endereço https://young-hollows-35414.herokuapp.com/ e logar com RGHC 3333 e senha 123
+
+Para acessar o aplicativo, primeiro é necessário baixar o aplicativo expo da app store, depois acessar pelo celular o link https://expo.io/@bmnascimento/projeto-asma e clicar em "Open project using expo"

@@ -2,6 +2,10 @@ import axios from 'axios'
 const baseUrl = 'https://young-hollows-35414.herokuapp.com/api/patients'
 //const baseUrl = 'http://192.168.0.13:3001/api/patients'
 
+const getOne = id => {
+  return axios.get(`${baseUrl}/${id}`).then(response => response.data)
+}
+
 const getData = async (id, date) => {
   const response = await axios.get(`${baseUrl}/data/${id}/${formatDate(date)}`);
   return response.data;
@@ -21,5 +25,6 @@ const formatDate = date => {
 }
 
 export default {
+  getOne,
   getData,
 }

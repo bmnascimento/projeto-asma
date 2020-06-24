@@ -1,0 +1,52 @@
+INTERFACE WEB
+1. Pré-requisitos: é necessário ter o node com npm instalados
+
+Link (baixar versão LTS): https://nodejs.org/en/download/
+
+
+2. Dentro da pasta backend, instalar as dependências executando o comando:
+
+npm install
+
+
+3. Criar um novo arquivo dentro da pasta backend com o nome .env com o seguinte conteúdo:
+
+PORT=3001
+PGURI=postgres://asma_app:aiqeHRSis1Z1VDnSuLa4@database-1.czxgmkz27wrc.us-east-2.rds.amazonaws.com:5432/asma_app
+FITBIT_CLIENT_ID=22BLTB
+FITBIT_CLIENT_SECRET=96a979e2dde106ef17a8e0ba02f24b44
+NODE_ENV=development
+SECRET=iJsrZ3nMYD5Q8JBFY2Tddrvemx62UAeoh3XYh2qBrJfnZvNzhPUaRz3XPTaj
+
+
+4. Também dentro da pasta backend, rodar o servidor com o comando:
+
+npm run dev
+
+
+5. Acessar o site no endereço http://localhost:3001
+
+
+----------------------------------------------------------
+APLICATIVO
+1. Pré-requisitos: é necessário ter o node com npm instalados
+
+Link (baixar versão LTS): https://nodejs.org/en/download/
+
+
+2. Dentro da pasta mobile, instalar as dependências executando o comando:
+
+npm install
+
+
+3. Instalar globalmente o expo com o comando:
+
+npm install expo-cli --global
+
+
+4. Também dentro da pasta mobile, rodar o expo com o seguinte comando: (vai abrir uma interface web com um qr code)
+
+expo start
+
+
+5. Baixar o aplicativo do expo no celular pela app store e usar o qr code para acessar o aplicativo

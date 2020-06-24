@@ -3,7 +3,7 @@ import { Container, Header, Title, Content, Left, Right, Body, Text, StyleProvid
 import getTheme from '../native-base-theme/components';
 import material from '../native-base-theme/variables/material';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
-import { View, DrawerLayoutAndroidBase } from 'react-native';
+import { View } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Linking, RefreshControl } from 'react-native';
 
@@ -16,6 +16,7 @@ export default function MainScreen() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [temFitbit, setTemFitbit] = useState(false);
   const [dados, setDados] = useState();
+  const [userData, setUserData] = useState();
 
   const { user, setUser } = useContext(AuthContext);
 
@@ -35,9 +36,14 @@ export default function MainScreen() {
   async function fetchData() {
     try {
       if (user.fitbitId) {
-        const response = await patientService.getData(user.id, new Date());
+        let response = await patientService.getData(user.id, new Date());
         if (response !== undefined) {
           setDados(response);
+        }
+        response = await patientService.getOne(user.id);
+        if (response !== undefined) {
+          console.log(response)
+          setUserData(response);
           setTemFitbit(true);
         }
       }
@@ -84,7 +90,7 @@ export default function MainScreen() {
             <Spinner color='green' />
             :
             temFitbit ?
-              <ShowFitbitInfo dados={dados} />
+              <ShowFitbitInfo dados={dados} user={userData} />
               :
               <Button block style={{ backgroundColor: 'green' }} onPress={() => Linking.openURL(`https://young-hollows-35414.herokuapp.com/auth/fitbit/${user.id}?origin=mobile`)}>
                 <Text>Conectar ao Fitbit</Text>
@@ -96,11 +102,11 @@ export default function MainScreen() {
   );
 }
 
-function ShowFitbitInfo({ dados }) {
-  const [minutosAtividade, setMinutosAtividade] = useState(dados.summary.fairlyActiveMinutes + dados.summary.veryActiveMinutes);
-  const [meta, setMeta] = useState(30);
+function ShowFitbitInfo({ dados, user }) {
+  const [passos, setPassos] = useState(dados.summary.steps);
+  const [meta, setMeta] = useState(user.metas.passos);
 
-  const porcentagem = Math.floor(minutosAtividade / meta * 100);
+  const porcentagem = Math.floor(passos / meta * 100);
 
   return (
     <>
@@ -123,9 +129,9 @@ function ShowFitbitInfo({ dados }) {
           }
         </AnimatedCircularProgress>
       </View>
-      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você fez {minutosAtividade} minutos de atividade hoje.</Text>
-      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Sua meta é fazer {meta} minutos de atividade por dia.</Text>
-      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você atingiu {porcentagem}% da sua meta hoje.{porcentagem >= 100 && ' Parabéns! 🥳'}</Text>
+      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você andou {passos} passos hoje.</Text>
+      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Sua meta é andar {meta} passos por dia.</Text>
+      <Text style={{ textAlign: 'center', marginBottom: 10 }}>Você atingiu {porcentagem}% da sua meta hoje.{porcentagem >= 100 && ' Parabéns!'}</Text>
     </>
   );
 }
