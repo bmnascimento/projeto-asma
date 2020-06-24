@@ -17,6 +17,8 @@ import InfoScreen from './src/InfoScreen'
 import LoginScreen from './src/LoginScreen'
 import AuthContext from './src/AuthContext'
 
+import patientService from './src/services/patients'
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -25,39 +27,8 @@ export default function App() {
   const [expoPushToken, setExpoPushToken] = React.useState('');
 
   React.useEffect(() => {
-    registerForPushNotificationsAsync();
     boot();
   }, []);
-
-  async function registerForPushNotificationsAsync() {
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync();
-      console.log('Token notificaçao');
-      console.log(token);
-      setExpoPushToken(token);
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-      Notifications.createChannelAndroidAsync('default', {
-        name: 'default',
-        sound: true,
-        priority: 'max',
-        vibrate: [0, 250, 250, 250],
-      });
-    }
-  };
 
   async function boot() {
     await Font.loadAsync({
@@ -69,9 +40,41 @@ export default function App() {
     try {
       const jsonValue = await AsyncStorage.getItem('usuarioLogado');
       setUser(JSON.parse(jsonValue));
+
+      // Notificação
+      if (Constants.isDevice) {
+        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          alert('Failed to get push token for push notification!');
+          return;
+        }
+        token = await Notifications.getExpoPushTokenAsync();
+        console.log('Token notificaçao');
+        console.log(token);
+        const expoPushTokenASAD = await patientService.update(JSON.parse(jsonValue).id, { expoPushToken: token });
+        console.log(expoPushTokenASAD);
+        setExpoPushToken(token);
+      } else {
+        alert('Must use physical device for Push Notifications');
+      }
+
+      if (Platform.OS === 'android') {
+        Notifications.createChannelAndroidAsync('default', {
+          name: 'default',
+          sound: true,
+          priority: 'max',
+          vibrate: [0, 250, 250, 250],
+        });
+      }
     } catch (e) {
       console.log('erro ao ler o async storage')
     }
+
     setIsReady(true);
   }
 

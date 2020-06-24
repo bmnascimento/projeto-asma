@@ -33,6 +33,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     metas: {
       type: Sequelize.TEXT
+    },
+    expoPushToken: {
+      type: Sequelize.TEXT
     }
   }, {
     // options

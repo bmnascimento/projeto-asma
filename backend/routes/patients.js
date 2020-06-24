@@ -154,7 +154,8 @@ patientsRouter.put('/:id', async (request, response, next) => {
       cpf: request.body.cpf,
       birthDate: request.body.birthDate,
       passwordHash: request.body.password ? await bcrypt.hash(request.body.password, 10) : undefined,
-      metas: JSON.stringify(request.body.metas),
+      metas: request.body.metas ? JSON.stringify(request.body.metas) : undefined,
+      expoPushToken: request.body.expoPushToken,
     }
 
     await db.Patient.update(patient, { where: { id } })
@@ -167,7 +168,8 @@ patientsRouter.put('/:id', async (request, response, next) => {
       rghg: patient.rghg,
       cpf: patient.cpf,
       birthDate: patient.birthDate,
-      metas: JSON.parse(patient.metas),
+      metas: patient.metas ? JSON.parse(patient.metas) : undefined,
+      expoPushToken: request.body.expoPushToken,
     })
   } catch (error) {
     next(error)

@@ -42,7 +42,6 @@ export default function MainScreen() {
         }
         response = await patientService.getOne(user.id);
         if (response !== undefined) {
-          console.log(response)
           setUserData(response);
           setTemFitbit(true);
         }
@@ -104,7 +103,7 @@ export default function MainScreen() {
 
 function ShowFitbitInfo({ dados, user }) {
   const [passos, setPassos] = useState(dados.summary.steps);
-  const [meta, setMeta] = useState(user.metas.passos);
+  const [meta, setMeta] = useState(user.metas.passos !== null ? user.metas.passos : 0);
 
   const porcentagem = Math.floor(passos / meta * 100);
 

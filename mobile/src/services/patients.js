@@ -11,6 +11,10 @@ const getData = async (id, date) => {
   return response.data;
 }
 
+const update = (id, newObject) => {
+  return axios.put(`${baseUrl}/${id}`, newObject).then(response => response.data)
+}
+
 const formatDate = date => {
   let month = '' + (date.getMonth() + 1)
   let day = '' + date.getDate()
@@ -27,4 +31,5 @@ const formatDate = date => {
 export default {
   getOne,
   getData,
+  update
 }

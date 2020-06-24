@@ -34,7 +34,6 @@ const ControleClinico = ({ id, lista }) => {
 }
 
 function UltimaResposta({ resposta }) {
-  console.log(resposta)
   const alternativas = {
     freqAcordou: ['Nunca', 'Quase nunca', 'Poucas vezes', 'Várias vezes', 'Muitas vezes', 'Muitíssimas vezes', 'Incapaz de dormir devido a asma'],
     intensidadeSintomas: ['Sem sintomas', 'Sintomas muito leves', 'Sintomas leves', 'Sintomas moderados', 'Sintomas um tanto graves', 'Sintomas graves', 'Sintomas muito graves'],
